@@ -30,6 +30,7 @@ public class Stock {
     private Hashtable<String, Double> pastMonth;    // price history for past month
     private Hashtable<String, Double> pastYear;     // price history for past year
 
+    
     /**
      * Default Stock constructor
      * @param n name of corporation, commodity, ETf, etc.
@@ -46,7 +47,6 @@ public class Stock {
         
         outlook = randNormOutlook();
     }
-
 
 
     /* New transaction
@@ -67,7 +67,6 @@ public class Stock {
         
         outlook += factor * Math.random() * 0.005;
     }
-
 
 
     /**
@@ -124,6 +123,9 @@ public class Stock {
     }
     
 
+    /**
+     * @return formatted string of metrics
+     */
     public String summary() {
         return name + " Inc. [" + ticker + "]" + 
             "\nPrice: " + transactionPrice + 
