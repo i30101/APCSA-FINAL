@@ -26,46 +26,65 @@ public class Stock {
     private double dayChange;
     private double dayChangePercent;  // percent change for the day
 
+    /* Other trading metrics */
+    private int volatility;
     
     private Hashtable<String, Double> pastMonth;    // price history for past month
     private Hashtable<String, Double> pastYear;     // price history for past year
 
-    
+
     /**
      * Default Stock constructor
-     * @param n name of corporation, commodity, ETf, etc.
-     * @param t ticker of stock
-     * @param i industry of the stock for classification
+     * @param pName name of corporation, commodity, ETf, etc.
+     * @param pTicker ticker of stock
+     * @param pIndustry industry of the stock for classification
      */
-    public Stock(String n, String t, String i) {
-        name = n;
-        ticker = t;
-        industry = i;
+    public Stock(String pName, String pTicker, String pIndustry) {
+        name = pName;
+        ticker = pTicker;
+        industry = pIndustry;
 
         transactionPrice = randNormPrice();
         previousClose = transactionPrice;
+
+        size = "Penny";
+        if(transactionPrice > 500) {
+            size = "Large";
+        }else if(transactionPrice > 20) {
+            size = "Medium";
+        }
         
         outlook = randNormOutlook();
+        volatility = 1;
     }
 
 
-    /* New transaction
-     * Price of stock is changed by a factor of the current stock price
-     * Whether the price increases or decreases is determined by the outlook
+    /**
+     * Custom constructor for child classes
+     * @param pName name of corporation, commodity, ETf, etc.
+     * @param pTicker ticker of stock
+     * @param pIndustry industry of the stock for classification
+     * @param mean center of normal distribution for price RNG
+     * @param stdDev spread of normal distribution for price RNG
+     * @param pVolatility custom volatility factor
      */
-    public void nextTransaction() {
-        double previous = transactionPrice;
-        int factor = -1;
-        if(Math.random() < outlook) {
-            factor = 1;
+    public Stock(String pName, String pTicker, String pIndustry, double mean, double stdDev, int pVolatility) {
+        name = pName;
+        ticker = pTicker;
+        industry = pIndustry;
+
+        transactionPrice = randNormPrice(mean, stdDev);
+        previousClose = transactionPrice;
+
+        size = "Penny";
+        if(transactionPrice > 500) {
+            size = "Large";
+        }else if(transactionPrice > 20) {
+            size = "Medium";
         }
 
-        transactionPrice = round(transactionPrice + factor * transactionPrice * (Math.random() * 0.005));
-        lastTransactionChange = round(transactionPrice - previous);
-        dayChange = round(transactionPrice - previousClose);
-        dayChangePercent = round(100 * dayChange / previousClose);
-        
-        outlook += factor * Math.random() * 0.005;
+        outlook = randNormOutlook();
+        volatility = pVolatility;
     }
 
 
@@ -80,22 +99,18 @@ public class Stock {
 
 
     /**
-     * Sets stock price and size
-     * Values are chosen from a normal distribution
+     * Sets stock size and chooses price from a normal distribution
      * @return price
      */
     private double randNormPrice() {
         double average = 10;
         double stdDev = 2;
-        size = "Penny";
         if(Math.random() > 0.5) {
             average = 50;
             stdDev = 10;
-            size = "Large";
         }else if(Math.random() > 0.5) {
-            average = 750;
-            stdDev = 500;
-            size = "Medium";
+            average = 500;
+            stdDev = 200;
         }
 
         double randomPrice = -1;
@@ -105,6 +120,39 @@ public class Stock {
         }
 
         return round(randomPrice);
+    }
+
+    
+    /**
+     * Sets price based on normal distribution with given parameters
+     * @param mean center of normal distribution
+     * @param stdDev standard deviation of normal distribution
+     * @return
+     */
+    private double randNormPrice(double mean, double stdDev) {
+        return round(mean + random.nextGaussian() * stdDev);
+    }
+
+
+
+    /**
+     * New transaction
+     * Price of stock is changed by a factor of the current stock price
+     * Whether the price increases or decreases is determined by the outlook
+     */
+    public void nextTransaction() {
+        double previous = transactionPrice;
+        int factor = -1;
+        if(Math.random() < outlook) {
+            factor = 1;
+        }
+
+        transactionPrice = round(transactionPrice + factor * transactionPrice * (Math.random() * 0.005) * volatility);
+        lastTransactionChange = round(transactionPrice - previous);
+        dayChange = round(transactionPrice - previousClose);
+        dayChangePercent = round(100 * dayChange / previousClose);
+        
+        outlook += factor * Math.random() * 0.005;
     }
 
 
@@ -152,4 +200,48 @@ public class Stock {
         return s;
     }
     
+    
+    public String getName() {
+        return name;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public double getTransactionPrice() {
+        return transactionPrice;
+    }
+
+    public double getLastTransactionChange() {
+        return lastTransactionChange;
+    }
+
+    public double getOutlook() {
+        return outlook;
+    }
+
+    public double getPreviousClose() {
+        return previousClose;
+    }
+
+    public double getDayChange() {
+        return dayChange;
+    }
+
+    public double getDayChangePercent() {
+        return dayChangePercent;
+    }
+
+    public int getVolatility() {
+        return volatility;
+    }
 }
