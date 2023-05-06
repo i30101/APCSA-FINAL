@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Driver {
     public static int runs;
 
@@ -14,19 +12,17 @@ public class Driver {
 
 
     public static void basicTrioTest() {
-        ArrayList<Stock> stocks = new ArrayList<Stock>();
+        Stocks.clearStocks();
 
-        stocks.add(new Stock("Intel", "INTC", "Semiconductor"));
-        stocks.add(new Stock("Qualcomm", "QCOM", "Semiconductor"));
-        stocks.add(new Stock("Coca-Cola", "KO", "Consumer Beverage"));
+        Stocks.addStock(new Stock("Intel", "INTC", "Semiconductor"));
+        Stocks.addStock(new Stock("Qualcomm", "QCOM", "Semiconductor"));
+        Stocks.addStock(new Stock("Coca-Cola", "KO", "Consumer Beverage"));
 
         System.out.println("TICKER\t|   PRICE\t|   CHANGE \t|   DAY CHANGE\t|   OUTLOOK");
         for(int i = 0; i < runs; i++) {
-            for(Stock s: stocks) {
-                // System.out.println("\n\n");
+            for(Stock s: Stocks.getStocks()) {
                 s.nextTransaction();
                 System.out.println(s);
-                // System.out.println(s.summary());
             }
             System.out.println();
         }
