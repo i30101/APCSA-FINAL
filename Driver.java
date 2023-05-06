@@ -8,6 +8,7 @@ public class Driver {
             intel.nextTransaction();
         }
         System.out.println(intel);
+        TimeKeeper.nextDay();
     }
 
 
@@ -24,6 +25,7 @@ public class Driver {
                 s.nextTransaction();
                 System.out.println(s);
             }
+            TimeKeeper.nextDay();
             System.out.println();
         }
     }

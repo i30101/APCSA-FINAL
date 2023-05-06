@@ -29,6 +29,7 @@ public class Stock {
     /* Other trading metrics */
     private int volatility;
     
+    // day, price
     private Hashtable<Integer, Double> pastMonth;    // price history for past month, index 0 is most recent
     private Hashtable<Integer, Double> pastYear;     // price history for past year, index 0 is most recent
 
@@ -148,19 +149,13 @@ public class Stock {
     public void nextTransaction() {
 
         // update price history
-        if(pastMonth.size() < 30){
-            pastMonth.put(pastMonth.size(), transactionPrice);
-        } else {
+        if(pastMonth.size() < 30)
             pastMonth.remove(0);
-            pastMonth.put(pastMonth.size(), transactionPrice);
-        }
-        if(pastYear.size() < 365){
-            pastYear.put(pastYear.size(), transactionPrice);
-        } else {
+        if(pastYear.size() < 365)
             pastYear.remove(0);
-            pastYear.put(pastYear.size(), transactionPrice);
-        }
 
+        pastMonth.put(TimeKeeper.getDay(), transactionPrice);
+        pastYear.put(TimeKeeper.getDay(), transactionPrice);
 
         double previous = transactionPrice;
         int factor = -1;
