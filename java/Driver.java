@@ -36,5 +36,6 @@ public class Driver {
 
     public static void main(String[] args) {
         Stock intel = new Stock("Intel Corporation", "INTC");
+        System.out.println(intel);
     }
 }
