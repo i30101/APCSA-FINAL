@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Driver {
     public static int runs;
 
@@ -8,24 +10,24 @@ public class Driver {
             intel.nextTransaction();
         }
         System.out.println(intel);
-        TimeKeeper.nextDay();
     }
 
 
     public static void basicTrioTest() {
-        Stocks.clearStocks();
+        ArrayList<Stock> stocks = new ArrayList<Stock>();
 
-        Stocks.addStock(new Stock("Intel", "INTC", "Semiconductor"));
-        Stocks.addStock(new Stock("Qualcomm", "QCOM", "Semiconductor"));
-        Stocks.addStock(new Stock("Coca-Cola", "KO", "Consumer Beverage"));
+        stocks.add(new Stock("Intel", "INTC", "Semiconductor"));
+        stocks.add(new Stock("Qualcomm", "QCOM", "Semiconductor"));
+        stocks.add(new Stock("Coca-Cola", "KO", "Consumer Beverage"));
 
         System.out.println("TICKER\t|   PRICE\t|   CHANGE \t|   DAY CHANGE\t|   OUTLOOK");
         for(int i = 0; i < runs; i++) {
-            for(Stock s: Stocks.getStocks()) {
+            for(Stock s: stocks) {
+                // System.out.println("\n\n");
                 s.nextTransaction();
                 System.out.println(s);
+                // System.out.println(s.summary());
             }
-            TimeKeeper.nextDay();
             System.out.println();
         }
     }

@@ -29,9 +29,8 @@ public class Stock {
     /* Other trading metrics */
     private int volatility;
     
-    // day, price
-    private Hashtable<Integer, Double> pastMonth;    // price history for past month, index 0 is most recent
-    private Hashtable<Integer, Double> pastYear;     // price history for past year, index 0 is most recent
+    private Hashtable<String, Double> pastMonth;    // price history for past month
+    private Hashtable<String, Double> pastYear;     // price history for past year
 
 
     /**
@@ -57,9 +56,6 @@ public class Stock {
         
         outlook = randNormOutlook();
         volatility = 1;
-
-        pastMonth = new Hashtable<Integer, Double>();
-        pastYear = new Hashtable<Integer, Double>();
     }
 
 
@@ -143,20 +139,8 @@ public class Stock {
      * New transaction
      * Price of stock is changed by a factor of the current stock price
      * Whether the price increases or decreases is determined by the outlook
-     * Price change is capped at 0.5% of the current price
-     * Updates price history
      */
     public void nextTransaction() {
-
-        // update price history
-        if(pastMonth.size() < 30)
-            pastMonth.remove(0);
-        if(pastYear.size() < 365)
-            pastYear.remove(0);
-
-        pastMonth.put(TimeKeeper.getDay(), transactionPrice);
-        pastYear.put(TimeKeeper.getDay(), transactionPrice);
-
         double previous = transactionPrice;
         int factor = -1;
         if(Math.random() < outlook) {
@@ -259,13 +243,5 @@ public class Stock {
 
     public int getVolatility() {
         return volatility;
-    }
-
-    public Hashtable<Integer, Double> getPastMonth() {
-        return pastMonth;
-    }
-
-    public Hashtable<Integer, Double> getPastYear() {
-        return pastYear;
     }
 }

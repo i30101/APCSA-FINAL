@@ -1,15 +1,5 @@
 public class TimeKeeper {
-    private static int day = 0;
+    private int year;
+    private int months;
     
-    public TimeKeeper() {
-        day = 0;
-    }
-
-    public static void nextDay() {
-        day++;
-    }
-
-    public static int getDay() {
-        return day;
-    }
 }
