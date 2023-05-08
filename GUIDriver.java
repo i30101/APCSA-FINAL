@@ -10,6 +10,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.ArrayList;
 
 public class GUIDriver {
@@ -26,67 +28,68 @@ public class GUIDriver {
 
 		// use a 2x3 grid layout
 		gridPanel.setLayout(new GridBagLayout());
-		gridPanel.setBackground(Color.LIGHT_GRAY);
+		gridPanel.setBackground(new Color(0x2C2F33));
 		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.NORTH;
+		c.anchor = GridBagConstraints.SOUTH;
 
 		// create the sidebar buttons
 		SidebarButton dashboardButton = new SidebarButton(new File("resources/dashboard.png"));
 		dashboardButton.setText("dashboard"); // used kind of like a button id
+		c.gridy = 0;
 		gridPanel.add(dashboardButton, c);
 		buttons.add(dashboardButton);
 
 		SidebarButton stocksButton = new SidebarButton(new File("resources/stocks.png"));
 		stocksButton.setText("stocks");
-		c.gridy = 1; // move to the next row
+		c.gridy++; // move to the next row
 		gridPanel.add(stocksButton, c);
 		buttons.add(stocksButton);
 
-		SidebarButton optionsButton = new SidebarButton(new File("resources/options.png"));
-		optionsButton.setText("options");
-		c.gridy = 2;
-		gridPanel.add(optionsButton, c);
-		buttons.add(optionsButton);
-
 		SidebarButton matthewButton = new SidebarButton(new File("resources/matthew.png"));
 		matthewButton.setText("matthew");
-		c.gridy = 3;
+		c.gridy++;
 		gridPanel.add(matthewButton, c);
 		buttons.add(matthewButton);
+
+		SidebarButton optionsButton = new SidebarButton(new File("resources/options.png"));
+		optionsButton.setText("options");
+		c.gridy++;
+		gridPanel.add(optionsButton, c);
+		buttons.add(optionsButton);
 
 		// create the display panel, which is the main content area
 		DisplayPanel displayPanel = new DisplayPanel();
 		displayPanel.setPreferredSize(new Dimension(600, 550));
-		c.gridx = 1;
+		c.gridx = 1; // 2nd column
 		c.gridy = 0;
-		c.ipady = 10;
-		c.ipadx = 3;
 		c.gridheight = buttons.size();
 		gridPanel.add(displayPanel, c);
 
 		// resize the display panel when the window is resized
 		gridPanel.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
-				displayPanel.setPreferredSize(new Dimension(gridPanel.getWidth() - 85, gridPanel.getHeight() - 10));
+				displayPanel.setPreferredSize(new Dimension(gridPanel.getWidth() - 76, gridPanel.getHeight()));
+				// 85 and 10 are magic numbers that work
 			}
 		});
+
+		// https://www.w3schools.blog/java-every-second
+		// required to update the display panel every half second because jpanel so cool yayyy
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				displayPanel.revalidate();
+			}
+		}, 0, 500);
 
 		// add action listeners to the buttons to switch display on click
 		for (SidebarButton button : buttons) {
 			button.addActionListener(event -> {
-				for (SidebarButton b : buttons) {
+				for (SidebarButton b : buttons)
 					b.deselect();
-				}
 				button.select();
-				if (button.getText().equals("dashboard")) {
-					displayPanel.displayDashboard();
-				} else if (button.getText().equals("stocks")) {
-					displayPanel.displayStocks();
-				} else if (button.getText().equals("options")) {
-					displayPanel.displayOptions();
-				} else if (button.getText().equals("matthew")) {
-					displayPanel.displayMatthew();
-				}
+				displayPanel.openByID(button.getText());
 			});
 		}
 

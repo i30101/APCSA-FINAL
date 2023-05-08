@@ -56,7 +56,7 @@ public class DisplayPanel extends JPanel {
 
     public void displayMatthew() {
         removeAll();
-        add(new JLabel("Matthew 🤓"));
+        add(new JLabel("Matthew 💀💀"));
         revalidate();
         repaint();
     }
