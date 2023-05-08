@@ -1,10 +1,20 @@
+package java;
 /**
+ * Default template class for companies, 
  * @author Andrew Kim and Dylan Ngyuen
  * @version 1.0, 4 May 2023
  * 
+ * Time for one transaction: 2 seconds
+ * Number of transactions per day: 100
+ * Duration of one day: 200 seconds
+ * 
+ * 
+ * Number of days in a year: 360
  */
 
+
 import java.util.*;
+
 
 public class Stock {
     private static Random random = new Random();
@@ -12,50 +22,54 @@ public class Stock {
     /* Descriptors */
     private String name;
     private String ticker;
-    private String size;
-    private String industry; 
     
     /* Intra-day trading metrics */
     private double transactionPrice;   // current price of transaction
     private double lastTransactionChange;   // change in stock price after previous transaction
     private double outlook; // likelihood of a price increase
 
-
     /* Daily trading metrics */
     private double previousClose;   // price of stock at end of previous trading day
     private double dayChange;
     private double dayChangePercent;  // percent change for the day
 
-    /* Other trading metrics */
+    /* Other stock metrics */
     private int volatility;
+    private double yearLow;
+    private double yearHigh;
     
-    private Hashtable<String, Double> pastMonth;    // price history for past month
-    private Hashtable<String, Double> pastYear;     // price history for past year
+    /* Price history */
+    private ArrayList<Double> dayHistory;
+    private ArrayList<Double> monthHistory;
+    private ArrayList<Double> yearHistory;
 
 
     /**
-     * Default Stock constructor
+     * Default Stock constructor (not to be used)
      * @param pName name of corporation, commodity, ETf, etc.
      * @param pTicker ticker of stock
-     * @param pIndustry industry of the stock for classification
      */
-    public Stock(String pName, String pTicker, String pIndustry) {
+    public Stock(String pName, String pTicker) {
         name = pName;
         ticker = pTicker;
-        industry = pIndustry;
 
         transactionPrice = randNormPrice();
-        previousClose = transactionPrice;
-
-        size = "Penny";
-        if(transactionPrice > 500) {
-            size = "Large";
-        }else if(transactionPrice > 20) {
-            size = "Medium";
-        }
-        
+        lastTransactionChange = 0;
         outlook = randNormOutlook();
+
+        previousClose = transactionPrice;
+        dayChange = 0;
+        dayChangePercent = 0;
+        
         volatility = 1;
+        yearLow = transactionPrice;
+        yearHigh = transactionPrice;
+
+        dayHistory = new ArrayList<Double>();
+        monthHistory = new ArrayList<Double>();
+        yearHistory = new ArrayList<Double>();
+
+        dayHistory.add(transactionPrice);
     }
 
 
@@ -71,20 +85,24 @@ public class Stock {
     public Stock(String pName, String pTicker, String pIndustry, double mean, double stdDev, int pVolatility) {
         name = pName;
         ticker = pTicker;
-        industry = pIndustry;
 
         transactionPrice = randNormPrice(mean, stdDev);
-        previousClose = transactionPrice;
-
-        size = "Penny";
-        if(transactionPrice > 500) {
-            size = "Large";
-        }else if(transactionPrice > 20) {
-            size = "Medium";
-        }
-
+        lastTransactionChange = 0;
         outlook = randNormOutlook();
+
+        previousClose = transactionPrice;
+        dayChange = 0;
+        dayChangePercent = 0;
+
         volatility = pVolatility;
+        yearLow = transactionPrice;
+        yearHigh = transactionPrice;
+
+        dayHistory = new ArrayList<Double>();
+        monthHistory = new ArrayList<Double>();
+        yearHistory = new ArrayList<Double>();
+
+        dayHistory.add(transactionPrice);
     }
 
 
@@ -100,7 +118,7 @@ public class Stock {
 
     /**
      * Sets stock size and chooses price from a normal distribution
-     * @return price
+     * @return price of stock
      */
     private double randNormPrice() {
         double average = 10;
@@ -127,32 +145,10 @@ public class Stock {
      * Sets price based on normal distribution with given parameters
      * @param mean center of normal distribution
      * @param stdDev standard deviation of normal distribution
-     * @return
+     * @return custom random price
      */
     private double randNormPrice(double mean, double stdDev) {
         return round(mean + random.nextGaussian() * stdDev);
-    }
-
-
-
-    /**
-     * New transaction
-     * Price of stock is changed by a factor of the current stock price
-     * Whether the price increases or decreases is determined by the outlook
-     */
-    public void nextTransaction() {
-        double previous = transactionPrice;
-        int factor = -1;
-        if(Math.random() < outlook) {
-            factor = 1;
-        }
-
-        transactionPrice = round(transactionPrice + factor * transactionPrice * (Math.random() * 0.005) * volatility);
-        lastTransactionChange = round(transactionPrice - previous);
-        dayChange = round(transactionPrice - previousClose);
-        dayChangePercent = round(100 * dayChange / previousClose);
-        
-        outlook += factor * Math.random() * 0.005;
     }
 
 
@@ -169,7 +165,61 @@ public class Stock {
         }
         return randomOutlook;
     }
+
+
+    /**
+     * New transaction
+     * Price of stock is changed by a factor of the current stock price
+     * Whether the price increases or decreases is determined by the outlook
+     */
+    public void newTransaction() {
+        double previous = transactionPrice;
+        int factor = -1;
+        if(Math.random() < outlook) {
+            factor = 1;
+        }
+
+        // change price of stock
+        transactionPrice = round(transactionPrice + factor * transactionPrice * (Math.random() * 0.005) * volatility);
+        
+        // change historical metrics
+        if(transactionPrice > yearHigh) {
+            yearHigh = transactionPrice;
+        }else if(transactionPrice < yearLow) {
+            yearLow = transactionPrice;
+        }
+
+        // change intra-day metrics
+        lastTransactionChange = round(transactionPrice - previous);
+        dayChange = round(transactionPrice - previousClose);
+        dayChangePercent = round(100 * dayChange / previousClose);
+        
+        // change outlook
+        outlook += factor * Math.random() * 0.005;
+
+        // update day history data;
+        dayHistory.add(transactionPrice);
+
+    }
+
     
+    /**
+     * 
+     */
+    public void newDay() {
+        previousClose = transactionPrice;
+        monthHistory.add(transactionPrice);
+        if(monthHistory.size() > 30) {
+            monthHistory.remove(0);
+        }
+        yearHistory.add(transactionPrice);
+        if(yearHistory.size() > 360) {
+            yearHistory.remove(0);
+        }
+
+
+    }
+
 
     /**
      * @return formatted string of metrics
@@ -178,9 +228,7 @@ public class Stock {
         return name + " Inc. [" + ticker + "]" + 
             "\nPrice: " + transactionPrice + 
             "\nPrice at previous close: $" + previousClose + 
-            "\nDay change: " + dayChange + " | " + dayChangePercent + "%" + 
-            "\nIndustry: " + industry + 
-            "\nSize: " + size;
+            "\nDay change: " + dayChange + " | " + dayChangePercent + "%";
     }
 
 
@@ -199,49 +247,6 @@ public class Stock {
         s += " \t|   " + outlook;
         return s;
     }
-    
-    
-    public String getName() {
-        return name;
-    }
 
-    public String getTicker() {
-        return ticker;
-    }
 
-    public String getSize() {
-        return size;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public double getTransactionPrice() {
-        return transactionPrice;
-    }
-
-    public double getLastTransactionChange() {
-        return lastTransactionChange;
-    }
-
-    public double getOutlook() {
-        return outlook;
-    }
-
-    public double getPreviousClose() {
-        return previousClose;
-    }
-
-    public double getDayChange() {
-        return dayChange;
-    }
-
-    public double getDayChangePercent() {
-        return dayChangePercent;
-    }
-
-    public int getVolatility() {
-        return volatility;
-    }
 }
