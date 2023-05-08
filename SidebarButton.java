@@ -5,6 +5,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class SidebarButton extends JButton {
 
     public SidebarButton(File image) throws IOException {
         super();
+        setFont(new Font("Arial", Font.PLAIN, 0));
         setSize(new Dimension(50, 50));
         setContentAreaFilled(false);
         setBorderPainted(false);
@@ -27,7 +29,7 @@ public class SidebarButton extends JButton {
         JLabel label = new JLabel(new ImageIcon(ImageIO.read(image)));
         add(panel);
         panel.add(label);
-        panel.setBackground(Color.LIGHT_GRAY);
+        deselect();
     }
 
     public boolean isSelected() {
@@ -36,11 +38,11 @@ public class SidebarButton extends JButton {
     
     public void select(){
         isSelected = true;
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.LIGHT_GRAY);
     }
 
     public void deselect(){
         isSelected = false;
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setBackground(Color.WHITE);
     }
 }

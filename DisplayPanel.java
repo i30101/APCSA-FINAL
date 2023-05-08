@@ -12,7 +12,9 @@ import javax.swing.*;
 public class DisplayPanel extends JPanel {
     public DisplayPanel() {
         super();
-        setBackground(Color.WHITE);
+        int color = 230;
+        setBackground(new Color(color, color, color));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayout(new GridBagLayout());
     }
 

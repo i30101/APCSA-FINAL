@@ -28,7 +28,7 @@ public class GUIDriver {
 
 		// use a 2x3 grid layout
 		gridPanel.setLayout(new GridBagLayout());
-		gridPanel.setBackground(new Color(0x2C2F33));
+		gridPanel.setBackground(Color.WHITE);
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.SOUTH;
 
@@ -94,7 +94,7 @@ public class GUIDriver {
 		}
 
 		mainGUI.add(gridPanel);
-		mainGUI.setSize(new Dimension(700, 600));
+		mainGUI.setSize(mainGUI.getMinimumSize());
 
 		// set the default display to the dashboard
 		dashboardButton.select();

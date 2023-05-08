@@ -18,8 +18,7 @@ public class MainFrame extends JFrame {
 	 */
 	public void loadConfig(){
 		setTitle("SSS: Stock Simulator on Steroids by Andrew Kim and Dylan Nguyen");
-		setMinimumSize(new Dimension(650, 550));
-		setMaximumSize(new Dimension(1000, 600));
+		setMinimumSize(new Dimension(700, 550));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
