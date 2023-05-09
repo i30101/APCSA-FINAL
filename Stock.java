@@ -1,5 +1,11 @@
-import java.util.*;
+/**
+ * @version 1.0, 9 May 2023
+ * @author Andrew Kim and Dylan Nguyen 
+ * 
+ * Default parent class for Shares, Commodities, and Cryptocurrencies
+ */
 
+import java.util.*;
 
 public class Stock {
     private static Random random = new Random();
@@ -11,12 +17,14 @@ public class Stock {
     /* Intra-day trading metrics */
     private double transactionPrice;   // current price of transaction
     private double lastTransactionChange;   // change in stock price after previous transaction
-    private double outlook; // likelihood of a price increase
-
+    
     /* Daily trading metrics */
     private double previousClose;   // price of stock at end of previous trading day
     private double dayChange;
     private double dayChangePercent;  // percent change for the day
+    
+    /* Performance  */
+    private double outlook; // likelihood of a price increase
 
     /* Other stock metrics */
     private int volatility;
@@ -24,9 +32,7 @@ public class Stock {
     private double yearHigh;
     
     /* Price history */
-    private ArrayList<Double> dayHistory;
-    private ArrayList<Double> monthHistory;
-    private ArrayList<Double> yearHistory;
+    private PriceHistory priceHistory;
 
 
     /**
@@ -50,11 +56,10 @@ public class Stock {
         yearLow = transactionPrice;
         yearHigh = transactionPrice;
 
-        dayHistory = new ArrayList<Double>();
-        monthHistory = new ArrayList<Double>();
-        yearHistory = new ArrayList<Double>();
+        priceHistory = new PriceHistory();
 
-        dayHistory.add(transactionPrice);
+        priceHistory.addIntraDay(transactionPrice);
+        priceHistory.addDay(previousClose);
     }
 
 
@@ -83,11 +88,10 @@ public class Stock {
         yearLow = transactionPrice;
         yearHigh = transactionPrice;
 
-        dayHistory = new ArrayList<Double>();
-        monthHistory = new ArrayList<Double>();
-        yearHistory = new ArrayList<Double>();
+        priceHistory = new PriceHistory();
 
-        dayHistory.add(transactionPrice);
+        priceHistory.addIntraDay(transactionPrice);
+        priceHistory.addDay(previousClose);
     }
 
 
@@ -183,26 +187,21 @@ public class Stock {
         outlook += factor * Math.random() * 0.005;
 
         // update day history data;
-        dayHistory.add(transactionPrice);
+        priceHistory.addIntraDay(transactionPrice);
 
     }
 
     
     /**
-     * 
+     * Record day's trading metrics and reset for a new day
      */
     public void newDay() {
+        /* Record day's trading metrics */
         previousClose = transactionPrice;
-        monthHistory.add(transactionPrice);
-        if(monthHistory.size() > 30) {
-            monthHistory.remove(0);
-        }
-        yearHistory.add(transactionPrice);
-        if(yearHistory.size() > 360) {
-            yearHistory.remove(0);
-        }
+        priceHistory.addDay(previousClose);
 
-
+        /* Reset day trading metrics */
+        priceHistory.newDay(previousClose);
     }
 
 
