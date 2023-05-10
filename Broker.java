@@ -76,10 +76,16 @@ public class Broker {
         try {
             writer = new FileWriter(csvPath);
             writer.flush();
+            String headers = "Ticker,";
+            for(int i = 0; i < 100; i++) {
+                headers += i + ",";
+            }
+            int length = headers.length();
+            writer.append(headers.substring(0, length - 1) + "\n");
             for(Stock s : stocks) {
                 writer.append(s.getPriceHistory().dayPricesFormatted());
-                System.out.println("Writing successful");
             }
+            System.out.println("Writing successful");
         }catch (IOException e) {
             System.out.println("Error writing CSV file: " + e);
         }finally {
