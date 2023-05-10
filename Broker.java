@@ -10,8 +10,12 @@ import java.util.*;
 import java.io.*;
 
 public class Broker {
-    private ArrayList<Stock> stocks;
+    private static ArrayList<Stock> stocks;
 
+    public static void main(String[] args) {
+        new Broker();
+        new GUIDriver();
+    }
     
     /**
      * Construct default broker and add stocks to market
@@ -23,13 +27,12 @@ public class Broker {
         }
     }
 
-
     /**
      * Puts lines of CSV into a String array and lines into an arraylist
      * @param filepath file to be read
      * @return contents of CSV file
      */
-    private ArrayList<String[]> readCSV(String filepath) {
+    private static ArrayList<String[]> readCSV(String filepath) {
         ArrayList<String[]> temp = new ArrayList<String[]>();
         try {
             Scanner scanner = new Scanner(new File(filepath));
@@ -46,7 +49,7 @@ public class Broker {
     }
 
 
-    public void newTransactions() {
+    public static void newTransactions() {
         for(Stock s : stocks ) {
             s.newTransaction();
             // System.out.println(s);
@@ -59,7 +62,7 @@ public class Broker {
      * @param ticker the desired stock
      * @return the price history
      */
-    public ArrayList<Double> tickerDayHistory(String ticker) {
+    public static ArrayList<Double> tickerDayHistory(String ticker) {
         for(Stock s : stocks) {
             if(s.getTicker().equals(ticker)) {
                 return s.getPriceHistory().getDayHistory();
@@ -69,7 +72,7 @@ public class Broker {
     }
 
 
-    public void writeHistories() {
+    public static void writeHistories() {
         String csvPath = "./data/day-history.csv";
         FileWriter writer = null;
 
@@ -92,5 +95,7 @@ public class Broker {
         }
     }
 
-
+    public static ArrayList<Stock> getStocks() {
+        return stocks;
+    }
 }

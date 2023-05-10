@@ -8,17 +8,12 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.ArrayList;
 
 public class GUIDriver {
-	public static void main(String[] args) throws IOException {
-		Stocks.add(new Stock("AAPL", "Apple Inc.","Technology"));
-		Stocks.add(new Stock("TSLA", "Tesla Inc.","Automotive"));
-		Stocks.add(new Stock("AMZN", "Amazon Inc.","Technology"));
-
+	public GUIDriver() {
 		// create the frame
 		MainFrame mainGUI = new MainFrame();
 

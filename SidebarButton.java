@@ -19,14 +19,20 @@ public class SidebarButton extends JButton {
     private boolean isSelected = false;
     JPanel panel;
 
-    public SidebarButton(File image) throws IOException {
+    public SidebarButton(File image) {
         super();
         setFont(new Font("Arial", Font.PLAIN, 0));
         setSize(new Dimension(50, 50));
         setContentAreaFilled(false);
         setBorderPainted(false);
         panel = new JPanel();
-        JLabel label = new JLabel(new ImageIcon(ImageIO.read(image)));
+        JLabel label;
+        try {
+            label = new JLabel(new ImageIcon(ImageIO.read(image)));
+        } catch (IOException e) {
+            label = new JLabel("Error");
+            e.printStackTrace();
+        }
         add(panel);
         panel.add(label);
         deselect();
