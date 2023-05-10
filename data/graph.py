@@ -8,3 +8,4 @@ yearPath = "./data/year-history.csv"
 df = pd.read_csv(dayPath)
 
 print(df.to_string())
+
