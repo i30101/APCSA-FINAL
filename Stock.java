@@ -1,5 +1,5 @@
 /**
- * @version 1.0, 9 May 2023
+ * @version 1.2.0, 9 May 2023
  * @author Andrew Kim and Dylan Nguyen 
  * 
  * Default parent class for Shares, Commodities, and Cryptocurrencies
@@ -13,6 +13,7 @@ public class Stock {
     /* Descriptors */
     private String name;
     private String ticker;
+    private String industry;
     
     /* Intra-day trading metrics */
     private double transactionPrice;   // current price of transaction
@@ -40,9 +41,10 @@ public class Stock {
      * @param pName name of corporation, commodity, ETf, etc.
      * @param pTicker ticker of stock
      */
-    public Stock(String pName, String pTicker) {
-        name = pName;
+    public Stock(String pTicker, String pName, String pIndustry) {
         ticker = pTicker;
+        name = pName;
+        industry = pIndustry;
 
         transactionPrice = randNormPrice();
         lastTransactionChange = 0;
@@ -72,9 +74,10 @@ public class Stock {
      * @param stdDev spread of normal distribution for price RNG
      * @param pVolatility custom volatility factor
      */
-    public Stock(String pName, String pTicker, String pIndustry, double mean, double stdDev, int pVolatility) {
-        name = pName;
+    public Stock(String pTicker, String pName, String pIndustry, double mean, double stdDev, int pVolatility) {
         ticker = pTicker;
+        name = pName;
+        industry = pIndustry;
 
         transactionPrice = randNormPrice(mean, stdDev);
         lastTransactionChange = 0;
@@ -210,6 +213,7 @@ public class Stock {
      */
     public String summary() {
         return name + " Inc. [" + ticker + "]" + 
+            "\n" + industry + 
             "\nPrice: " + transactionPrice + 
             "\nPrice at previous close: $" + previousClose + 
             "\nDay change: " + dayChange + " | " + dayChangePercent + "%";
@@ -233,4 +237,11 @@ public class Stock {
     }
 
 
+    public String getTicker() {
+        return ticker;
+    }
+
+    public PriceHistory getPriceHistory() {
+        return priceHistory;
+    }
 }

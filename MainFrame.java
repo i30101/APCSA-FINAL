@@ -1,6 +1,6 @@
 /**
- * @author Andrew Kim and Dylan Nguyen
  * @version 1.0, 8 May 2023
+ * @author Dylan Nugyen and Andrew Kim
  */
 
 import java.awt.Dimension;

@@ -1,3 +1,10 @@
+/**
+ * @version 1.0.0 9 May 2023
+ * @author Andrew Kim and Dylan Nguyen
+ * 
+ * Price history manager for all stocks and indeces
+ */
+
 import java.util.*;
 
 public class PriceHistory {
@@ -7,7 +14,7 @@ public class PriceHistory {
 
 
     /**
-     * Default pricehistory constructor
+     * Default PriceHistory constructor
      */
     public PriceHistory() {
         dayHistory = new ArrayList<Double>();
@@ -89,6 +96,11 @@ public class PriceHistory {
         return formatted.substring(0, formatted.length() - 2) + "\n";
     }
 
+
+    @Override
+    public String toString() {
+        return "";
+    }
     
     public ArrayList<Double> getDayHistory() {
         return dayHistory;
