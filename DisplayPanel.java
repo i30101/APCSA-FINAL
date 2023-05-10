@@ -6,7 +6,6 @@
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.io.IOException;
 import java.awt.GridBagConstraints;
 
 import javax.swing.*;
@@ -42,14 +41,37 @@ public class DisplayPanel extends JPanel {
 
     public void displayDashboard() {
         removeAll();
+        c.gridy = 0;
+        c.gridx = 0;
         add(new JLabel("Dashboard"));
+        c.gridy = 1;
+        JButton runPY = new JButton("Run Python");
+        runPY.addActionListener(e -> {
+            Runtime rt = Runtime.getRuntime();
+            try {
+                rt.exec(new String[] { "python.exe", "./graph.py" });
+            } catch (Exception i){
+                JOptionPane.showMessageDialog(null, "Error running file");
+            }
+            displayStocks();
+        });
+        add(runPY, c);
+        revalidate();
+        repaint();
+    }
+
+    public void displayStocks() {
+        
+        repaint();
+        removeAll();
+        add(new JLabel("Stocks"));
         c.anchor = GridBagConstraints.NORTHWEST;
 
         c.gridx = 0;
         c.gridy = 1;
         c.ipadx = 100;
 
-        for (Stock s : Stocks.getStocks()) {
+        for (Stock s : Broker.getStocks()) {
             add(new JLabel(s.getTicker() + ": " + s.getName()), c);
             c.gridy++;
         }
@@ -57,7 +79,7 @@ public class DisplayPanel extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
 
-        for (Stock s : Stocks.getStocks()) {
+        for (Stock s : Broker.getStocks()) {
             JLabel label = new JLabel();
             label.setText("$ " + s.getTransactionPrice());
             add(label, c);
@@ -67,7 +89,7 @@ public class DisplayPanel extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
 
-        for (Stock s : Stocks.getStocks()) {
+        for (Stock s : Broker.getStocks()) {
             JLabel label = new JLabel();
             if (s.getDayChange() > 0) {
                 label.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
@@ -83,44 +105,24 @@ public class DisplayPanel extends JPanel {
         }
 
         c.gridx = 0;
-        c.gridy = Stocks.getStocks().size() + 1;
+        c.gridy = Broker.getStocks().size() + 1;
 
         JButton stepTransaction = new JButton("Step Transaction");
         stepTransaction.addActionListener(e -> {
-            Stocks.nextTransationAll();
-            displayDashboard();
+            Broker.newTransactions();
+            displayStocks();
         });
         JButton stepTransaction100 = new JButton("Step Transaction 100 times");
         stepTransaction100.addActionListener(e -> {
             for (int i = 0; i < 100; i++) {
-                Stocks.nextTransationAll();
+                Broker.newTransactions();
             }
-            displayDashboard();
+            displayStocks();
         });
         add(stepTransaction, c);
         c.gridx++;
         add(stepTransaction100, c);
 
-        revalidate();
-        repaint();
-    }
-
-    public void displayStocks() {
-        removeAll();
-        add(new JLabel("Stocks"));
-        c.anchor = GridBagConstraints.NORTHWEST;
-        c.gridy = 1;
-        JButton runPY = new JButton("Run Python");
-        runPY.addActionListener(e -> {
-            Runtime rt = Runtime.getRuntime();
-            try {
-                rt.exec(new String[] { "python.exe", "./graph.py" });
-            } catch (IOException a) {
-                a.printStackTrace();
-            }
-            displayStocks();
-        });
-        add(runPY, c);
         revalidate();
         repaint();
     }
