@@ -43,7 +43,7 @@ public class Driver {
         // System.out.println(intel);
 
         Broker broker = new Broker();
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 99; i++) {
             broker.newTransactions();
         }
         broker.writeHistories();
