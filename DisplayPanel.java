@@ -18,6 +18,7 @@ public class DisplayPanel extends JPanel {
     private GridBagConstraints c;
     private Runtime runtime;
     Font font = new Font("Verdana", Font.PLAIN, 10);
+    
 
     public DisplayPanel() {
         super();
@@ -56,15 +57,11 @@ public class DisplayPanel extends JPanel {
     }
 
     public void displayStocks() {
-
-        repaint();
         removeAll();
+        repaint();
+
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 4;
-        c.anchor = GridBagConstraints.CENTER;
-        add(new JLabel("Stocks"), c);
-
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.WEST;
@@ -73,7 +70,6 @@ public class DisplayPanel extends JPanel {
 
         c.gridy = 0;
 
-        font = new Font("Verdana", Font.PLAIN, getWidth() / 100);
 
         for (Stock s : Broker.getStocks()) {
             c.gridx = 0;
@@ -119,6 +115,7 @@ public class DisplayPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = Broker.getStocks().size() + 1;
+        c.gridwidth = 4;
 
         Button stepTransaction = new Button("Step Transaction");
         stepTransaction.setFont(font);
@@ -134,7 +131,7 @@ public class DisplayPanel extends JPanel {
             displayStocks();
         });
         add(stepTransaction, c);
-        c.gridx++;
+        c.gridy++;
         add(stepTransaction100, c);
 
         revalidate();
@@ -143,7 +140,49 @@ public class DisplayPanel extends JPanel {
 
     public void displayOptions() {
         removeAll();
-        add(new JLabel("Options"));
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.NONE;
+
+        JLabel optionsLabel = new JLabel("Options");
+        optionsLabel.setFont(font);
+        add(optionsLabel, c);
+
+        JLabel fontSizeLabel = new JLabel("Font size: ");
+        fontSizeLabel.setFont(font);
+
+        JTextField fontSizeInput = new JTextField(4);
+        fontSizeInput.setFont(font);
+
+        c.gridy = 1;
+        c.gridx = 0;
+        add(fontSizeLabel, c);
+        c.gridx = 1;
+        add(fontSizeInput, c);
+
+        c.gridy = 2;
+        c.gridx = 0;
+        Button applyButton = new Button("Apply");
+        applyButton.setFont(font);
+        applyButton.addActionListener(e -> {
+            try {
+                int fontSize = Integer.parseInt(fontSizeInput.getText());
+                if (fontSize > 0 && fontSize < 50) {
+                    font = new Font("Verdana", Font.PLAIN, fontSize);
+                    displayOptions();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Please enter a valid font size between 1 and 50");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        add(applyButton, c);
         revalidate();
         repaint();
     }

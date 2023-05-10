@@ -69,6 +69,7 @@ public class GUIDriver {
 		gridPanel.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
 				displayPanel.setPreferredSize(new Dimension(gridPanel.getWidth() - 76, gridPanel.getHeight()));
+				displayPanel.repaint();
 				displayPanel.revalidate();
 			}
 		});
@@ -81,6 +82,7 @@ public class GUIDriver {
 				selected = button.getText();
 				button.select();
 				displayPanel.openByID(selected);
+				mainGUI.setWindowTitle(selected);
 			});
 		}
 
@@ -90,7 +92,6 @@ public class GUIDriver {
 		// set the default display to the dashboard
 		dashboardButton.select();
 		displayPanel.displayDashboard();
-
-		
+		mainGUI.setWindowTitle(selected);
 	}
 }
