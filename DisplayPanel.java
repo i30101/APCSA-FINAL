@@ -4,14 +4,20 @@
  * @version 1.0, 8 May 2023
  */
 
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.GridBagConstraints;
+import java.awt.Font;
 
 import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
     private GridBagConstraints c;
+    private Runtime runtime;
+    Font font = new Font("Verdana", Font.PLAIN, 10);
 
     public DisplayPanel() {
         super();
@@ -20,6 +26,7 @@ public class DisplayPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayout(new GridBagLayout());
         c = new GridBagConstraints();
+        runtime = Runtime.getRuntime();
     }
 
     public void openByID(String str) {
@@ -44,79 +51,86 @@ public class DisplayPanel extends JPanel {
         c.gridy = 0;
         c.gridx = 0;
         add(new JLabel("Dashboard"));
-        c.gridy = 1;
-        JButton runPY = new JButton("Run Python");
-        runPY.addActionListener(e -> {
-            Runtime rt = Runtime.getRuntime();
-            try {
-                rt.exec(new String[] { "python.exe", "./graph.py" });
-            } catch (Exception i){
-                JOptionPane.showMessageDialog(null, "Error running file");
-            }
-            displayStocks();
-        });
-        add(runPY, c);
         revalidate();
         repaint();
     }
 
     public void displayStocks() {
-        
+
         repaint();
         removeAll();
-        add(new JLabel("Stocks"));
-        c.anchor = GridBagConstraints.NORTHWEST;
-
         c.gridx = 0;
-        c.gridy = 1;
-        c.ipadx = 100;
+        c.gridy = 0;
+        c.gridwidth = 4;
+        c.anchor = GridBagConstraints.CENTER;
+        add(new JLabel("Stocks"), c);
+
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.WEST;
+        c.weightx = 0.5;
+        c.weighty = 1;
+
+        c.gridy = 0;
+
+        font = new Font("Verdana", Font.PLAIN, getWidth() / 100);
 
         for (Stock s : Broker.getStocks()) {
-            add(new JLabel(s.getTicker() + ": " + s.getName()), c);
+            c.gridx = 0;
             c.gridy++;
-        }
 
-        c.gridx = 1;
-        c.gridy = 1;
+            JLabel stockName = new JLabel();
+            stockName.setText(s.getName() + " - " + s.getTicker());
+            stockName.setFont(font);
+            add(stockName, c);
 
-        for (Stock s : Broker.getStocks()) {
-            JLabel label = new JLabel();
-            label.setText("$ " + s.getTransactionPrice());
-            add(label, c);
-            c.gridy++;
-        }
+            c.gridx = 1;
 
-        c.gridx = 2;
-        c.gridy = 1;
+            JLabel priceLabel = new JLabel();
+            priceLabel.setText("$ " + s.getTransactionPrice());
+            priceLabel.setFont(font);
+            add(priceLabel, c);
 
-        for (Stock s : Broker.getStocks()) {
-            JLabel label = new JLabel();
+            c.gridx = 2;
+
+            JLabel dayChangeLabel = new JLabel();
+            dayChangeLabel.setFont(font);
             if (s.getDayChange() > 0) {
-                label.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
+                dayChangeLabel.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
                         + "</font></html>");
             } else if (s.getDayChange() < 0) {
-                label.setText("<html><font color='red'>" + s.getDayChange() + " (" + s.getDayChangePercent() + "%)"
+                dayChangeLabel.setText("<html><font color='red'>" + s.getDayChange() + " (" + s.getDayChangePercent() + "%)"
                         + "</font></html>");
             } else {
-                label.setText("" + s.getDayChange());
+                dayChangeLabel.setText("" + s.getDayChange());
             }
-            add(label, c);
-            c.gridy++;
+            add(dayChangeLabel, c);
+
+            c.gridx = 3;
+
+            Button button = new Button("Options");
+            button.setFont(font);
+            button.addActionListener(e -> {
+                System.out.println(getWidth() + "," + getHeight());
+            });
+
+            add(button, c);
         }
 
         c.gridx = 0;
         c.gridy = Broker.getStocks().size() + 1;
 
-        JButton stepTransaction = new JButton("Step Transaction");
+        Button stepTransaction = new Button("Step Transaction");
+        stepTransaction.setFont(font);
         stepTransaction.addActionListener(e -> {
             Broker.newTransactions();
             displayStocks();
         });
-        JButton stepTransaction100 = new JButton("Step Transaction 100 times");
+        Button stepTransaction100 = new Button("Step Transaction 100 times");
+        stepTransaction100.setFont(font);
         stepTransaction100.addActionListener(e -> {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 100; i++)
                 Broker.newTransactions();
-            }
             displayStocks();
         });
         add(stepTransaction, c);

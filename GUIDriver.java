@@ -13,9 +13,11 @@ import java.util.TimerTask;
 import java.util.ArrayList;
 
 public class GUIDriver {
+	private String selected = "dashboard";
 	public GUIDriver() {
 		// create the frame
 		MainFrame mainGUI = new MainFrame();
+		mainGUI.setIconImage(new ImageIcon("resources/icon.png").getImage());
 
 		// create the container; background color is the sidebar color
 		JPanel gridPanel = new JPanel();
@@ -67,27 +69,18 @@ public class GUIDriver {
 		gridPanel.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
 				displayPanel.setPreferredSize(new Dimension(gridPanel.getWidth() - 76, gridPanel.getHeight()));
-				// 85 and 10 are magic numbers that work
-			}
-		});
-
-		// https://www.w3schools.blog/java-every-second
-		// required to update the display panel every half second because jpanel so cool yayyy
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
 				displayPanel.revalidate();
 			}
-		}, 0, 500);
+		});
 
 		// add action listeners to the buttons to switch display on click
 		for (SidebarButton button : buttons) {
 			button.addActionListener(event -> {
 				for (SidebarButton b : buttons)
 					b.deselect();
+				selected = button.getText();
 				button.select();
-				displayPanel.openByID(button.getText());
+				displayPanel.openByID(selected);
 			});
 		}
 
@@ -97,5 +90,7 @@ public class GUIDriver {
 		// set the default display to the dashboard
 		dashboardButton.select();
 		displayPanel.displayDashboard();
+
+		
 	}
 }
