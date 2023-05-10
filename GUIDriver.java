@@ -16,6 +16,10 @@ import java.util.ArrayList;
 
 public class GUIDriver {
 	public static void main(String[] args) throws IOException {
+		Stocks.add(new Stock("AAPL", "Apple Inc.","Technology"));
+		Stocks.add(new Stock("TSLA", "Tesla Inc.","Automotive"));
+		Stocks.add(new Stock("AMZN", "Amazon Inc.","Technology"));
+
 		// create the frame
 		MainFrame mainGUI = new MainFrame();
 
@@ -94,7 +98,7 @@ public class GUIDriver {
 		}
 
 		mainGUI.add(gridPanel);
-		mainGUI.setSize(mainGUI.getMinimumSize());
+		mainGUI.setSize(mainGUI.getMinimumSize().width+10, mainGUI.getMinimumSize().height+10);
 
 		// set the default display to the dashboard
 		dashboardButton.select();
