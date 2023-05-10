@@ -241,7 +241,52 @@ public class Stock {
         return ticker;
     }
 
+    public String getName() {
+        return name;
+    }
+    
+    public String getIndustry() {
+        return industry;
+    }
+
+    public double getTransactionPrice() {
+        return transactionPrice;
+    }
+
+
+    public double getLastTransactionChange() {
+        return lastTransactionChange;
+    }
+
+    public double getPreviousClose() {
+        return previousClose;
+    }
+
+    public double getDayChange() {
+        return dayChange;
+    }
+
+    public double getDayChangePercent() {
+        return dayChangePercent;
+    }
+
+    public double getOutlook() {
+        return outlook;
+    }
+
+    public int getVolatility() {
+        return volatility;
+    }
+
+    public double getYearLow() {
+        return yearLow;
+    }
+
+    public double getYearHigh() {
+        return yearHigh;
+    }
+
     public PriceHistory getPriceHistory() {
         return priceHistory;
-    }
+    }    
 }
