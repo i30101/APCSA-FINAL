@@ -46,6 +46,6 @@ public class Driver {
         for(int i = 0; i < 100; i++) {
             broker.newTransactions();
         }
-        System.out.println(broker.getTickerPrice("VZ"));
+        broker.writeHistories();
     }
 }

@@ -58,7 +58,7 @@ public class Stock {
         yearLow = transactionPrice;
         yearHigh = transactionPrice;
 
-        priceHistory = new PriceHistory();
+        priceHistory = new PriceHistory(ticker);
 
         priceHistory.addIntraDay(transactionPrice);
         priceHistory.addDay(previousClose);
@@ -91,7 +91,7 @@ public class Stock {
         yearLow = transactionPrice;
         yearHigh = transactionPrice;
 
-        priceHistory = new PriceHistory();
+        priceHistory = new PriceHistory(ticker);
 
         priceHistory.addIntraDay(transactionPrice);
         priceHistory.addDay(previousClose);

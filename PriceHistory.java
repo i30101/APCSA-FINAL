@@ -8,6 +8,8 @@
 import java.util.*;
 
 public class PriceHistory {
+    private String ticker;
+
     private ArrayList<Double> dayHistory;
     private ArrayList<Double> monthHistory;
     private ArrayList<Double> yearHistory;
@@ -15,8 +17,11 @@ public class PriceHistory {
 
     /**
      * Default PriceHistory constructor
+     * @param pTicker to identify history
      */
-    public PriceHistory() {
+    public PriceHistory(String pTicker) {
+        ticker = pTicker;
+
         dayHistory = new ArrayList<Double>();
         monthHistory = new ArrayList<Double>();
         yearHistory = new ArrayList<Double>();
@@ -63,9 +68,9 @@ public class PriceHistory {
      * @return formatted string for CSV
      */
     public String dayPricesFormatted() {
-        String formatted = "";
+        String formatted = ticker + ",";
         for(Double s : dayHistory) {
-            formatted += s + ", ";
+            formatted += s + ",";
         }
         return formatted.substring(0, formatted.length() - 2) + "\n";
     }
@@ -76,9 +81,9 @@ public class PriceHistory {
      * @return formatted string for CSV
      */
     public String monthPricesFormatted() {
-        String formatted = "";
+        String formatted = ticker + ",";
         for(Double s : monthHistory) {
-            formatted += s + ", ";
+            formatted += s + ",";
         }
         return formatted.substring(0, formatted.length() - 2) + "\n";
     }
@@ -89,9 +94,9 @@ public class PriceHistory {
      * @return formatted string for CSV
      */
     public String yearPricesFormatted() {
-        String formatted = "";
+        String formatted = ticker + ",";
         for(Double s : yearHistory) {
-            formatted += s + ", ";
+            formatted += s + ",";
         }
         return formatted.substring(0, formatted.length() - 2) + "\n";
     }

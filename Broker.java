@@ -10,13 +10,6 @@ import java.util.*;
 import java.io.*;
 
 public class Broker {
-    /*  CSV Tools*/
-
-
-    /* General metrics */
-    
-
-    /* Stocks */
     private ArrayList<Stock> stocks;
 
     
@@ -61,7 +54,12 @@ public class Broker {
     }
 
 
-    public ArrayList<Double> getTickerPrice(String ticker) {
+    /**
+     * Obtains day price history of stock
+     * @param ticker the desired stock
+     * @return the price history
+     */
+    public ArrayList<Double> tickerDayHistory(String ticker) {
         for(Stock s : stocks) {
             if(s.getTicker().equals(ticker)) {
                 return s.getPriceHistory().getDayHistory();
@@ -69,7 +67,30 @@ public class Broker {
         }
         return null;
     }
-    
+
+
+    public void writeHistories() {
+        String csvPath = "./data/day-history.csv";
+        FileWriter writer = null;
+
+        try {
+            writer = new FileWriter(csvPath);
+            writer.flush();
+            for(Stock s : stocks) {
+                writer.append(s.getPriceHistory().dayPricesFormatted());
+                System.out.println("Writing successful");
+            }
+        }catch (IOException e) {
+            System.out.println("Error writing CSV file: " + e);
+        }finally {
+            try {
+                writer.flush();
+                writer.close();
+            }catch (IOException e) {
+                System.out.println("Error closing writer: " + e);
+            }
+        }
+    }
 
 
 }
