@@ -1,17 +1,24 @@
-import getopt
+# version 1.0.0 11 May 2023
+# author Andrew Kim and Dylan Nguyen
+# graphing utility for stocks
+
 import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# initialize data
+# read csv data
 dataframes = {
     "day" : pd.read_csv("./data/day-history.csv"),
     "month" : pd.read_csv("./data/month-history.csv"),
     "year" : pd.read_csv("./data/year-history.csv")
 }
-keys = list(dataframes.keys())
+
+# timeframes for stock data
+frames = list(dataframes.keys())
+
+# all stock tickers
 tickers = list(dataframes["day"]["Ticker"].values)
 
 
@@ -61,4 +68,12 @@ def line_graph(title, x_label, y_label, data):
     plt.show()
     
 
-print(sys.argv)
+# process command line arguments
+def process_args():
+    frame = sys.argv[1]
+    ticker = sys.argv[2]
+    if(frame in frames and ticker in tickers):
+        graph_ticker_history(ticker, tickers.index(ticker), frame)
+    
+
+process_args()
