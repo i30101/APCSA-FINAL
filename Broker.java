@@ -49,6 +49,9 @@ public class Broker {
     }
 
 
+    /**
+     * Next transaction for all stocks
+     */
     public static void newTransactions() {
         for(Stock s : stocks ) {
             s.newTransaction();
@@ -72,6 +75,9 @@ public class Broker {
     }
 
 
+    /**
+     * Writes price history data of alls stocks
+     */
     public static void writeHistories() {
         String csvPath = "./data/day-history.csv";
         FileWriter writer = null;
