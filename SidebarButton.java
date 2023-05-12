@@ -30,7 +30,7 @@ public class SidebarButton extends JButton {
         try {
             label = new JLabel(new ImageIcon(ImageIO.read(image)));
         } catch (IOException e) {
-            label = new JLabel("Error");
+            label = new ScaledLabel("Error");
             e.printStackTrace();
         }
         add(panel);

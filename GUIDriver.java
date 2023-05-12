@@ -1,3 +1,4 @@
+
 /**
  * @version 1.0, 8 May 2023
  * @author Dylan Nguyen and Andrew Kim
@@ -5,6 +6,8 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 
 public class GUIDriver {
 	private String selected = "dashboard";
+
 	public GUIDriver() {
 		// create the frame
 		MainFrame mainGUI = new MainFrame();
@@ -69,25 +73,27 @@ public class GUIDriver {
 		gridPanel.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
 				displayPanel.setPreferredSize(new Dimension(gridPanel.getWidth() - 76, gridPanel.getHeight()));
-				displayPanel.repaint();
 				displayPanel.revalidate();
 			}
 		});
 
 		// add action listeners to the buttons to switch display on click
 		for (SidebarButton button : buttons) {
-			button.addActionListener(event -> {
-				for (SidebarButton b : buttons)
-					b.deselect();
-				selected = button.getText();
-				button.select();
-				displayPanel.openByID(selected);
-				mainGUI.setWindowTitle(selected);
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for (SidebarButton b : buttons)
+						b.deselect();
+					selected = button.getText();
+					button.select();
+					displayPanel.openByID(selected);
+					mainGUI.setWindowTitle(selected);
+				}
 			});
 		}
 
 		mainGUI.add(gridPanel);
-		mainGUI.setSize(mainGUI.getMinimumSize().width+10, mainGUI.getMinimumSize().height+10);
+		mainGUI.setSize(mainGUI.getMinimumSize().width + 10, mainGUI.getMinimumSize().height + 10);
 
 		// set the default display to the dashboard
 		dashboardButton.select();

@@ -10,10 +10,12 @@ import java.util.*;
 import java.io.*;
 
 public class Broker {
-    private static ArrayList<Stock> stocks;
+    private static ArrayList<Stock> stocks = new ArrayList<Stock>();
 
     public static void main(String[] args) {
-        new Broker();
+        for(String[] s : readCSV("./data/companies.csv")) {
+            stocks.add(new Stock(s[0], s[1], s[2]));
+        }
         new GUIDriver();
     }
     
@@ -21,10 +23,7 @@ public class Broker {
      * Construct default broker and add stocks to market
      */
     public Broker() {
-        stocks = new ArrayList<Stock>();
-        for(String[] s : readCSV("./data/companies.csv")) {
-            stocks.add(new Stock(s[0], s[1], s[2]));
-        }
+        
     }
 
     /**

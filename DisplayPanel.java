@@ -7,7 +7,6 @@
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -16,7 +15,7 @@ import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
     private GridBagConstraints c;
-    private Runtime runtime;
+    private ArrayList<Stock> stocks;
     Font font = new Font("Verdana", Font.PLAIN, 10);
     
 
@@ -24,10 +23,9 @@ public class DisplayPanel extends JPanel {
         super();
         int color = 230;
         setBackground(new Color(color, color, color));
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayout(new GridBagLayout());
         c = new GridBagConstraints();
-        runtime = Runtime.getRuntime();
+        stocks = new ArrayList<Stock>();
     }
 
     public void openByID(String str) {
@@ -51,7 +49,7 @@ public class DisplayPanel extends JPanel {
         removeAll();
         c.gridy = 0;
         c.gridx = 0;
-        add(new JLabel("Dashboard"));
+        add(new ScaledLabel("Dashboard"));
         revalidate();
         repaint();
     }
@@ -72,24 +70,27 @@ public class DisplayPanel extends JPanel {
 
 
         for (Stock s : Broker.getStocks()) {
+
+            stocks.add(s); // to allow for manipulation later
+
             c.gridx = 0;
             c.gridy++;
 
-            JLabel stockName = new JLabel();
+            ScaledLabel stockName = new ScaledLabel();
             stockName.setText(s.getName() + " - " + s.getTicker());
             stockName.setFont(font);
             add(stockName, c);
 
             c.gridx = 1;
 
-            JLabel priceLabel = new JLabel();
+            ScaledLabel priceLabel = new ScaledLabel();
             priceLabel.setText("$ " + s.getTransactionPrice());
             priceLabel.setFont(font);
             add(priceLabel, c);
 
             c.gridx = 2;
 
-            JLabel dayChangeLabel = new JLabel();
+            ScaledLabel dayChangeLabel = new ScaledLabel();
             dayChangeLabel.setFont(font);
             if (s.getDayChange() > 0) {
                 dayChangeLabel.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
@@ -107,10 +108,13 @@ public class DisplayPanel extends JPanel {
             Button button = new Button("Options");
             button.setFont(font);
             button.addActionListener(e -> {
-                System.out.println(getWidth() + "," + getHeight());
+                StockOptionsWindow optionWindow = new StockOptionsWindow(s);
+                optionWindow.setLocation(button.getX(), button.getY() + button.getHeight());
             });
 
             add(button, c);
+
+
         }
 
         c.gridx = 0;
@@ -149,15 +153,16 @@ public class DisplayPanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
 
-        JLabel optionsLabel = new JLabel("Options");
+        ScaledLabel optionsLabel = new ScaledLabel("Options");
         optionsLabel.setFont(font);
         add(optionsLabel, c);
 
-        JLabel fontSizeLabel = new JLabel("Font size: ");
+        ScaledLabel fontSizeLabel = new ScaledLabel("Font size: ");
         fontSizeLabel.setFont(font);
 
         JTextField fontSizeInput = new JTextField(4);
         fontSizeInput.setFont(font);
+        fontSizeInput.setText("" + Options.getFont().getSize());
 
         c.gridy = 1;
         c.gridx = 0;
@@ -174,6 +179,7 @@ public class DisplayPanel extends JPanel {
                 int fontSize = Integer.parseInt(fontSizeInput.getText());
                 if (fontSize > 0 && fontSize < 50) {
                     font = new Font("Verdana", Font.PLAIN, fontSize);
+                    Options.setFont(font);
                     displayOptions();
                 }else{
                     JOptionPane.showMessageDialog(null, "Please enter a valid font size between 1 and 50");
@@ -189,7 +195,7 @@ public class DisplayPanel extends JPanel {
 
     public void displayMatthew() {
         removeAll();
-        add(new JLabel("Matthew 💀💀"));
+        add(new ScaledLabel("Matthew !!!!"));
         revalidate();
         repaint();
     }
