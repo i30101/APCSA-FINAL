@@ -46,22 +46,24 @@ public class StockOptionsWindow extends JFrame {
 		
 
 
-		ScaledLabel label = new ScaledLabel("Buy amount: ");
+		ScaledLabel label = new ScaledLabel("Buy: ");
 		panel.add(label);
 		JTextField buyAmountInput = new JTextField();
 		buyAmountInput.setFont(Options.getFont());
 		buyAmountInput.setText("1");
 		panel.add(buyAmountInput);
 		Button buyButton = new Button("Buy");
+		buyButton.setFont(Options.getFont());
 		panel.add(buyButton);
 
-		ScaledLabel label2 = new ScaledLabel("Sell amount: ");
+		ScaledLabel label2 = new ScaledLabel("Sell: ");
 		panel.add(label2);
 		JTextField sellAmountInput = new JTextField();
 		sellAmountInput.setFont(Options.getFont());
 		sellAmountInput.setText("1");
 		panel.add(sellAmountInput);
 		Button sellButton = new Button("Sell");
+		sellButton.setFont(Options.getFont());
 		panel.add(sellButton);
 
 		ScaledLabel viewGraphLabel = new ScaledLabel("View graph");

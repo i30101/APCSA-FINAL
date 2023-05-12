@@ -7,25 +7,26 @@
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 
 import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
-    private GridBagConstraints c;
-    private ArrayList<Stock> stocks;
+    private StocksPanel stocksPanel;
     Font font = new Font("Verdana", Font.PLAIN, 10);
+    GridBagConstraints c;
     
 
     public DisplayPanel() {
         super();
-        int color = 230;
-        setBackground(new Color(color, color, color));
         setLayout(new GridBagLayout());
+        stocksPanel = new StocksPanel();
         c = new GridBagConstraints();
-        stocks = new ArrayList<Stock>();
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.weightx = 1;
+        c.weighty = 1;
     }
 
     public void openByID(String str) {
@@ -47,9 +48,8 @@ public class DisplayPanel extends JPanel {
 
     public void displayDashboard() {
         removeAll();
-        c.gridy = 0;
-        c.gridx = 0;
-        add(new ScaledLabel("Dashboard"));
+        add(new ScaledLabel("Dashboard"),c);
+        
         revalidate();
         repaint();
     }
@@ -57,93 +57,16 @@ public class DisplayPanel extends JPanel {
     public void displayStocks() {
         removeAll();
         repaint();
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = 1;
-        c.anchor = GridBagConstraints.WEST;
-        c.weightx = 0.5;
-        c.weighty = 1;
-
-        c.gridy = 0;
-
-
-        for (Stock s : Broker.getStocks()) {
-
-            stocks.add(s); // to allow for manipulation later
-
-            c.gridx = 0;
-            c.gridy++;
-
-            ScaledLabel stockName = new ScaledLabel();
-            stockName.setText(s.getName() + " - " + s.getTicker());
-            stockName.setFont(font);
-            add(stockName, c);
-
-            c.gridx = 1;
-
-            ScaledLabel priceLabel = new ScaledLabel();
-            priceLabel.setText("$ " + s.getTransactionPrice());
-            priceLabel.setFont(font);
-            add(priceLabel, c);
-
-            c.gridx = 2;
-
-            ScaledLabel dayChangeLabel = new ScaledLabel();
-            dayChangeLabel.setFont(font);
-            if (s.getDayChange() > 0) {
-                dayChangeLabel.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
-                        + "</font></html>");
-            } else if (s.getDayChange() < 0) {
-                dayChangeLabel.setText("<html><font color='red'>" + s.getDayChange() + " (" + s.getDayChangePercent() + "%)"
-                        + "</font></html>");
-            } else {
-                dayChangeLabel.setText("" + s.getDayChange());
-            }
-            add(dayChangeLabel, c);
-
-            c.gridx = 3;
-
-            Button button = new Button("Options");
-            button.setFont(font);
-            button.addActionListener(e -> {
-                StockOptionsWindow optionWindow = new StockOptionsWindow(s);
-                optionWindow.setLocation(button.getX(), button.getY() + button.getHeight());
-            });
-
-            add(button, c);
-
-
-        }
-
-        c.gridx = 0;
-        c.gridy = Broker.getStocks().size() + 1;
-        c.gridwidth = 4;
-
-        Button stepTransaction = new Button("Step Transaction");
-        stepTransaction.setFont(font);
-        stepTransaction.addActionListener(e -> {
-            Broker.newTransactions();
-            displayStocks();
-        });
-        Button stepTransaction100 = new Button("Step Transaction 100 times");
-        stepTransaction100.setFont(font);
-        stepTransaction100.addActionListener(e -> {
-            for (int i = 0; i < 100; i++)
-                Broker.newTransactions();
-            displayStocks();
-        });
-        add(stepTransaction, c);
-        c.gridy++;
-        add(stepTransaction100, c);
-
+        stocksPanel.reload();
+        add(stocksPanel,c);
         revalidate();
         repaint();
     }
 
     public void displayOptions() {
         removeAll();
+
+        GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = 0;
         c.gridy = 0;
