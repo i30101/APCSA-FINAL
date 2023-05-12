@@ -20,13 +20,6 @@ public class Broker {
         }
         new GUIDriver();
     }
-    
-    /**
-     * Construct default broker and add stocks to market
-     */
-    public Broker() {
-        
-    }
 
     /**
      * Puts lines of CSV into a String array and lines into an arraylist
