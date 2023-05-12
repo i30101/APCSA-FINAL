@@ -7,6 +7,8 @@
  */
 
 import java.util.*;
+
+
 import java.io.*;
 
 public class Broker {
@@ -48,6 +50,9 @@ public class Broker {
     }
 
 
+    /**
+     * Next transaction for all stocks
+     */
     public static void newTransactions() {
         for(Stock s : stocks ) {
             s.newTransaction();
@@ -71,10 +76,8 @@ public class Broker {
     }
 
 
-    public static void writeHistories() {
-        String csvPath = "./data/day-history.csv";
+    public static void writeCSV(String csvPath, ArrayList<String> prices) {
         FileWriter writer = null;
-
         try {
             writer = new FileWriter(csvPath);
             writer.flush();
@@ -84,8 +87,8 @@ public class Broker {
             }
             int length = headers.length();
             writer.append(headers.substring(0, length - 1) + "\n");
-            for(Stock s : stocks) {
-                writer.append(s.getPriceHistory().dayPricesFormatted());
+            for(String p : prices) {
+                writer.append(p);
             }
             System.out.println("Writing successful");
         }catch (IOException e) {
@@ -98,6 +101,51 @@ public class Broker {
                 System.out.println("Error closing writer: " + e);
             }
         }
+    }
+
+
+    /**
+     * Write day price history to CSV
+     */
+    public static void dayWrite() {
+        ArrayList<String> prices = new ArrayList<String>();
+        for(Stock s : stocks) {
+            prices.add(s.getPriceHistory().dayPricesFormatted());
+        }
+        writeCSV("./data/day-history.csv", prices);
+    }
+
+
+    /**
+     * Write month price history to CSV
+     */
+    public static void monthWrite() {
+        ArrayList<String> prices = new ArrayList<String>();
+        for(Stock s : stocks) {
+            prices.add(s.getPriceHistory().monthPricesFormatted());
+        }
+        writeCSV("./data/month-history", prices);
+    }
+
+
+    /**
+     * Write year price history to CSV
+     */
+    public static void yearWrite() {
+        ArrayList<String> prices = new ArrayList<String>();
+        for(Stock s : stocks) {
+            prices.add(s.getPriceHistory().yearPricesFormatted());
+        }
+        writeCSV("./data/year-history.csv", prices);
+    }
+
+
+    /**
+     * Writes price history data of alls stocks
+     */
+    public static void writeHistories() {
+
+
     }
 
     public static ArrayList<Stock> getStocks() {
