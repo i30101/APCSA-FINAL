@@ -7,27 +7,43 @@
  */
 
 import java.util.*;
-
-
 import java.io.*;
 
 public class Broker {
     private static ArrayList<Stock> stocks;
 
+
     public static void main(String[] args) {
 
-        new Broker();
+        stocks = new ArrayList<Stock>();
+
+        ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
+        ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
+
+        for(int i = 0; i < rawStocks.size(); i++) {
+            String[] tempStock = rawStocks.get(i);
+            String[] tempPrice = rawPrices.get(i);
+            
+            double price = Double.parseDouble(tempPrice[tempPrice.length - 1]);
+
+            stocks.add(new Stock(tempStock[0], tempStock[1], tempStock[2], price));
+        }
+
         new GUIDriver();
     }
     
+
     /**
-     * Construct default broker and add stocks to market
+     * Next transaction for all stocks
      */
-    public Broker() {
-        stocks = new ArrayList<Stock>();
-        for(String[] s : readCSV("./data/companies.csv")) {
-            stocks.add(new Stock(s[0], s[1], s[2]));
+    public static void newTransactions() {
+        for(Stock s : stocks ) {
+            s.newTransaction();
+            // System.out.println(s);
         }
+        dayWrite();
+        monthWrite();
+        yearWrite();
     }
 
     /**
@@ -42,7 +58,7 @@ public class Broker {
             scanner.useDelimiter("\n");
             while(scanner.hasNext()) {
                 String next = scanner.next();
-                temp.add(next.split(",", 5));
+                temp.add(next.split(",", -1));
             }
             scanner.close();
         }catch (Exception e) {
@@ -53,46 +69,25 @@ public class Broker {
 
 
     /**
-     * Next transaction for all stocks
+     * Writes list of CSV line strings
+     * @param csvPath path of file
+     * @param prices formatted list of prices
      */
-    public static void newTransactions() {
-        for(Stock s : stocks ) {
-            s.newTransaction();
-            // System.out.println(s);
-        }
-    }
-
-
-    /**
-     * Obtains day price history of stock
-     * @param ticker the desired stock
-     * @return the price history
-     */
-    public static ArrayList<Double> tickerDayHistory(String ticker) {
-        for(Stock s : stocks) {
-            if(s.getTicker().equals(ticker)) {
-                return s.getPriceHistory().getDayHistory();
-            }
-        }
-        return null;
-    }
-
-
     public static void writeCSV(String csvPath, ArrayList<String> prices) {
         FileWriter writer = null;
         try {
             writer = new FileWriter(csvPath);
             writer.flush();
-            String headers = "Ticker,";
-            for(int i = 0; i < 100; i++) {
-                headers += i + ",";
-            }
-            int length = headers.length();
-            writer.append(headers.substring(0, length - 1) + "\n");
+            // String headers = "Ticker,";
+            // for(int i = 0; i < 100; i++) {
+            //     headers += i + ",";
+            // }
+            // int length = headers.length();
+            // writer.append(headers.substring(0, length - 1) + "\n");
             for(String p : prices) {
                 writer.append(p);
             }
-            System.out.println("Writing successful");
+            // System.out.println("Writing successful");
         }catch (IOException e) {
             System.out.println("Error writing CSV file: " + e);
         }finally {
@@ -112,7 +107,9 @@ public class Broker {
     public static void dayWrite() {
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
-            prices.add(s.getPriceHistory().dayPricesFormatted());
+            String price = s.getPriceHistory().dayPricesFormatted();
+            System.out.println(price);
+            prices.add(price);
         }
         writeCSV("./data/day-history.csv", prices);
     }
@@ -126,7 +123,7 @@ public class Broker {
         for(Stock s : stocks) {
             prices.add(s.getPriceHistory().monthPricesFormatted());
         }
-        writeCSV("./data/month-history", prices);
+        writeCSV("./data/month-history.csv", prices);
     }
 
 

@@ -65,6 +65,30 @@ public class Stock {
     }
 
 
+    public Stock(String pTicker, String pName, String pIndustry, double pPrice) {
+        ticker = pTicker;
+        name = pName;
+        industry = pIndustry;
+
+        transactionPrice = pPrice;
+        lastTransactionChange = 0;
+        outlook = randNormOutlook();
+
+        previousClose = transactionPrice;
+        dayChange = 0;
+        dayChangePercent = 0;
+
+        volatility = 1;
+        yearLow = transactionPrice;
+        yearHigh = transactionPrice;
+
+        priceHistory = new PriceHistory(ticker);
+
+        priceHistory.addIntraDay(transactionPrice);
+        priceHistory.addDay(transactionPrice);
+    }
+
+
     /**
      * Custom constructor for child classes
      * @param pName name of corporation, commodity, ETf, etc.
@@ -191,6 +215,10 @@ public class Stock {
 
         // update day history data;
         priceHistory.addIntraDay(transactionPrice);
+
+        if(PriceHistory.getDayTransactions() % 30 == 0) {
+            newDay();
+        }
 
     }
 

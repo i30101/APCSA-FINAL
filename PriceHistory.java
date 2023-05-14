@@ -8,6 +8,7 @@
 import java.util.*;
 
 public class PriceHistory {
+    private static int dayTransactions;
     private String ticker;
 
     private ArrayList<Double> dayHistory;
@@ -20,6 +21,7 @@ public class PriceHistory {
      * @param pTicker to identify history
      */
     public PriceHistory(String pTicker) {
+        dayTransactions = 0;
         ticker = pTicker;
 
         dayHistory = new ArrayList<Double>();
@@ -34,6 +36,7 @@ public class PriceHistory {
      */
     public void addIntraDay(double intraDay) {
         dayHistory.add(intraDay);
+        dayTransactions++;
     }
 
     
@@ -42,6 +45,10 @@ public class PriceHistory {
      * @param previousClose closing price
      */
     public void addDay(double previousClose) {
+        if(ticker.equals("DIS")) {
+            System.out.println("Mickey Mouse Bad");
+        }
+        // System.out.println(monthHistory.size());
         monthHistory.add(previousClose);
         if(monthHistory.size() > 30) {
             monthHistory.remove(0);
@@ -72,7 +79,8 @@ public class PriceHistory {
         for(Double s : dayHistory) {
             formatted += s + ",";
         }
-        return formatted.substring(0, formatted.length() - 2) + "\n";
+        System.out.println(formatted);
+        return formatted.substring(0, formatted.length() - 1) + "\n";
     }
 
 
@@ -85,7 +93,7 @@ public class PriceHistory {
         for(Double s : monthHistory) {
             formatted += s + ",";
         }
-        return formatted.substring(0, formatted.length() - 2) + "\n";
+        return formatted.substring(0, formatted.length() - 1) + "\n";
     }
 
 
@@ -98,13 +106,17 @@ public class PriceHistory {
         for(Double s : yearHistory) {
             formatted += s + ",";
         }
-        return formatted.substring(0, formatted.length() - 2) + "\n";
+        return formatted.substring(0, formatted.length() - 1) + "\n";
     }
 
 
     @Override
     public String toString() {
         return "";
+    }
+
+    public static int getDayTransactions() {
+        return dayTransactions;
     }
     
     public ArrayList<Double> getDayHistory() {
