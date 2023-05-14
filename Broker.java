@@ -10,7 +10,8 @@ import java.util.*;
 import java.io.*;
 
 public class Broker {
-    private static ArrayList<Stock> stocks;
+    private static ArrayList<Stock> stocks = new ArrayList<Stock>();
+
 
 
     public static void main(String[] args) {

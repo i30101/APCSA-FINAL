@@ -5,7 +5,7 @@
  * Default parent class for Shares, Commodities, and Cryptocurrencies
  */
 
-import java.util.*;
+ import java.util.*;
 
 public class Stock {
     private static Random random = new Random();
@@ -28,7 +28,7 @@ public class Stock {
     private double outlook; // likelihood of a price increase
 
     /* Other stock metrics */
-    private double volatility;
+    private int volatility;
     private double yearLow;
     private double yearHigh;
     
@@ -98,7 +98,7 @@ public class Stock {
      * @param stdDev spread of normal distribution for price RNG
      * @param pVolatility custom volatility factor
      */
-    public Stock(String pTicker, String pName, String pIndustry, double mean, double stdDev, double pVolatility) {
+    public Stock(String pTicker, String pName, String pIndustry, double mean, double stdDev, int pVolatility) {
         ticker = pTicker;
         name = pName;
         industry = pIndustry;
@@ -127,7 +127,7 @@ public class Stock {
      * @param d unshorted double
      * @return double with two decimal places
      */
-    public double round(double d) {
+    private double round(double d) {
         return Math.round(d * 100.0) / 100.0;
     }
 
@@ -156,14 +156,14 @@ public class Stock {
         return round(randomPrice);
     }
 
-
+    
     /**
      * Sets price based on normal distribution with given parameters
      * @param mean center of normal distribution
      * @param stdDev standard deviation of normal distribution
      * @return custom random price
      */
-    public double randNormPrice(double mean, double stdDev) {
+    private double randNormPrice(double mean, double stdDev) {
         return round(mean + random.nextGaussian() * stdDev);
     }
 
@@ -302,7 +302,7 @@ public class Stock {
         return outlook;
     }
 
-    public double getVolatility() {
+    public int getVolatility() {
         return volatility;
     }
 

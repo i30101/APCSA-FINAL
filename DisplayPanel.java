@@ -7,27 +7,26 @@
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 
 import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
-    private GridBagConstraints c;
-    private Runtime runtime;
+    private StocksPanel stocksPanel;
     Font font = new Font("Verdana", Font.PLAIN, 10);
+    GridBagConstraints c;
     
 
     public DisplayPanel() {
         super();
-        int color = 230;
-        setBackground(new Color(color, color, color));
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setLayout(new GridBagLayout());
+        stocksPanel = new StocksPanel();
         c = new GridBagConstraints();
-        runtime = Runtime.getRuntime();
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.weightx = 1;
+        c.weighty = 1;
     }
 
     public void openByID(String str) {
@@ -49,9 +48,8 @@ public class DisplayPanel extends JPanel {
 
     public void displayDashboard() {
         removeAll();
-        c.gridy = 0;
-        c.gridx = 0;
-        add(new JLabel("Dashboard"));
+        add(new ScaledLabel("Dashboard"),c);
+        
         revalidate();
         repaint();
     }
@@ -59,87 +57,16 @@ public class DisplayPanel extends JPanel {
     public void displayStocks() {
         removeAll();
         repaint();
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = 1;
-        c.anchor = GridBagConstraints.WEST;
-        c.weightx = 0.5;
-        c.weighty = 1;
-
-        c.gridy = 0;
-
-
-        for (Stock s : Broker.getStocks()) {
-            c.gridx = 0;
-            c.gridy++;
-
-            JLabel stockName = new JLabel();
-            stockName.setText(s.getName() + " - " + s.getTicker());
-            stockName.setFont(font);
-            add(stockName, c);
-
-            c.gridx = 1;
-
-            JLabel priceLabel = new JLabel();
-            priceLabel.setText("$ " + s.getTransactionPrice());
-            priceLabel.setFont(font);
-            add(priceLabel, c);
-
-            c.gridx = 2;
-
-            JLabel dayChangeLabel = new JLabel();
-            dayChangeLabel.setFont(font);
-            if (s.getDayChange() > 0) {
-                dayChangeLabel.setText("<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
-                        + "</font></html>");
-            } else if (s.getDayChange() < 0) {
-                dayChangeLabel.setText("<html><font color='red'>" + s.getDayChange() + " (" + s.getDayChangePercent() + "%)"
-                        + "</font></html>");
-            } else {
-                dayChangeLabel.setText("" + s.getDayChange());
-            }
-            add(dayChangeLabel, c);
-
-            c.gridx = 3;
-
-            Button button = new Button("Options");
-            button.setFont(font);
-            button.addActionListener(e -> {
-                System.out.println(getWidth() + "," + getHeight());
-            });
-
-            add(button, c);
-        }
-
-        c.gridx = 0;
-        c.gridy = Broker.getStocks().size() + 1;
-        c.gridwidth = 4;
-
-        Button stepTransaction = new Button("Step Transaction");
-        stepTransaction.setFont(font);
-        stepTransaction.addActionListener(e -> {
-            Broker.newTransactions();
-            displayStocks();
-        });
-        Button stepTransaction100 = new Button("Step Transaction 100 times");
-        stepTransaction100.setFont(font);
-        stepTransaction100.addActionListener(e -> {
-            for (int i = 0; i < 100; i++)
-                Broker.newTransactions();
-            displayStocks();
-        });
-        add(stepTransaction, c);
-        c.gridy++;
-        add(stepTransaction100, c);
-
+        stocksPanel.reload();
+        add(stocksPanel,c);
         revalidate();
         repaint();
     }
 
     public void displayOptions() {
         removeAll();
+
+        GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = 0;
         c.gridy = 0;
@@ -149,15 +76,16 @@ public class DisplayPanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
 
-        JLabel optionsLabel = new JLabel("Options");
+        ScaledLabel optionsLabel = new ScaledLabel("Options");
         optionsLabel.setFont(font);
         add(optionsLabel, c);
 
-        JLabel fontSizeLabel = new JLabel("Font size: ");
+        ScaledLabel fontSizeLabel = new ScaledLabel("Font size: ");
         fontSizeLabel.setFont(font);
 
         JTextField fontSizeInput = new JTextField(4);
         fontSizeInput.setFont(font);
+        fontSizeInput.setText("" + Options.getFont().getSize());
 
         c.gridy = 1;
         c.gridx = 0;
@@ -174,6 +102,7 @@ public class DisplayPanel extends JPanel {
                 int fontSize = Integer.parseInt(fontSizeInput.getText());
                 if (fontSize > 0 && fontSize < 50) {
                     font = new Font("Verdana", Font.PLAIN, fontSize);
+                    Options.setFont(font);
                     displayOptions();
                 }else{
                     JOptionPane.showMessageDialog(null, "Please enter a valid font size between 1 and 50");
@@ -189,7 +118,7 @@ public class DisplayPanel extends JPanel {
 
     public void displayMatthew() {
         removeAll();
-        add(new JLabel("Matthew 💀💀"));
+        add(new ScaledLabel("Matthew !!!!"));
         revalidate();
         repaint();
     }
