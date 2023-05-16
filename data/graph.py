@@ -19,7 +19,7 @@ dataframes = {
 frames = list(dataframes.keys())
 
 # all stock tickers
-tickers = list(dataframes["day"]["Ticker"].values)
+tickers = list(dataframes["day"][0].values)
 
 
 # extract data for desired ticker
