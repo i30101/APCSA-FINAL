@@ -28,7 +28,7 @@ public class StocksPanel extends JPanel {
             stocks.add(s); // to allow for manipulation later
 
             ScaledLabel stockName = new ScaledLabel();
-            stockName.setText(s.getName() + " - " + s.getTicker());
+            stockName.setText(s.getTicker() + " - " + s.getName());
             stockName.setFont(Options.getFont());
             add(stockName, c);
 
@@ -55,8 +55,7 @@ public class StocksPanel extends JPanel {
             Button button = new Button("Options");
             button.setFont(Options.getFont());
             button.addActionListener(e -> {
-                StockOptionsWindow optionWindow = new StockOptionsWindow(s);
-                optionWindow.setLocation(button.getX(), button.getY() + button.getHeight());
+                new StockOptionsWindow(s, button.getX(),button.getY() + button.getHeight());
             });
 
             add(button, c);
