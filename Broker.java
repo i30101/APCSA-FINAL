@@ -21,7 +21,7 @@ public class Broker {
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
         ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
 
-        for(int i = 0; i < rawStocks.size(); i++) {
+        for(int i = 1; i < rawStocks.size(); i++) {
             String[] tempStock = rawStocks.get(i);
             String[] tempPrice = rawPrices.get(i);
             
