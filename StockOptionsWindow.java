@@ -15,8 +15,10 @@ import javax.swing.JTextField;
 public class StockOptionsWindow extends JFrame {
 	Runtime runtime = Runtime.getRuntime();
 
-	public StockOptionsWindow(Stock stock){
-		setTitle("Stock Options for " + stock.getName() + " - " + stock.getTicker());
+	public StockOptionsWindow(Stock stock, int x, int y){
+		super();
+		setLocation(x, y);
+		setTitle("Stock Options for " + stock.getTicker() + " - " + stock.getName());
 		setSize(400 * (Options.getFont().getSize()/10), 200 * (Options.getFont().getSize()/10));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -84,6 +86,7 @@ public class StockOptionsWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					viewGraph.setLabel("Loading graph...");
 					System.out.println("Trying to run "+("python ./data/graph.py " + graphOptions.getSelectedItem() + " " + stock.getTicker()));
 					String[] command = {"python", "./data/graph.py", (String) graphOptions.getSelectedItem(), stock.getTicker()};
 					InputStream output = runtime.exec(command).getErrorStream();
@@ -97,10 +100,15 @@ public class StockOptionsWindow extends JFrame {
 							JOptionPane.showMessageDialog(null, "Error: No data for "+graphOptions.getSelectedItem()+" graph of "+stock.getTicker());
 							break;
 						}
+						if(error.indexOf("no module") != -1){
+							JOptionPane.showMessageDialog(null, "Error: Libraries not installed. Please run install.bat.");
+							break;
+						}
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				viewGraph.setLabel("View graph");
 			}
 			
 		});
@@ -109,6 +117,6 @@ public class StockOptionsWindow extends JFrame {
 		repaint();
 	}
 	public static void main(String[] args) {
-		new StockOptionsWindow(new Stock("AAPL", "Apple", "Technology"));
+		new StockOptionsWindow(new Stock("AAPL", "Apple", "Technology"), 0, 0);
 	}
 }
