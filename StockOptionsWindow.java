@@ -89,11 +89,11 @@ public class StockOptionsWindow extends JFrame {
 					viewGraph.setLabel("Loading graph...");
 					System.out.println("Trying to run "+("python ./data/graph.py " + graphOptions.getSelectedItem() + " " + stock.getTicker()));
 					String[] command = {"python", "./data/graph.py", (String) graphOptions.getSelectedItem(), stock.getTicker()};
+					// sourced from https://stackoverflow.com/questions/5711084/java-runtime-getruntime-getting-output-from-executing-a-command-line-program 
 					InputStream output = runtime.exec(command).getErrorStream();
 					int data = output.read();
 					String error = "";
 					while(data != -1) {
-						System.out.print((char) data);
 						error += (char) data;
 						data = output.read();
 						if(error.indexOf("IndexError") != -1) {
@@ -104,6 +104,11 @@ public class StockOptionsWindow extends JFrame {
 							JOptionPane.showMessageDialog(null, "Error: Libraries not installed. Please run install.bat.");
 							break;
 						}
+						if(error.indexOf("Error") != -1){
+							JOptionPane.showMessageDialog(null, "An error occured.");
+							break;
+						}
+						
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();

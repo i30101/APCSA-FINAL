@@ -109,7 +109,6 @@ public class Broker {
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
             String price = s.getPriceHistory().dayPricesFormatted();
-            System.out.println(price);
             prices.add(price);
         }
         writeCSV("./data/day-history.csv", prices);

@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # read csv data
 dataframes = {
     "day" : pd.read_csv("./data/day-history.csv"),
-    "month" : pd.read_csv("./data/month-history.csv"),
-    "year" : pd.read_csv("./data/year-history.csv")
+    # "month" : pd.read_csv("./data/month-history.csv"),
+    # "year" : pd.read_csv("./data/year-history.csv")
 }
 
 # timeframes for stock data
