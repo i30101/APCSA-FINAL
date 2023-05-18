@@ -47,8 +47,7 @@ public class DisplayPanel extends JPanel {
 
     public void displayDashboard() {
         removeAll();
-        add(new ScaledLabel("Dashboard"),c);
-        
+        add(new ScaledLabel("Dashboard"));
         revalidate();
         repaint();
     }

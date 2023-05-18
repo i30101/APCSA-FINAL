@@ -6,6 +6,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 
 public class SidebarButton extends JButton {
     private boolean isSelected = false;
+    private final int IMAGE_WIDTH = 32;
     JPanel panel;
 
     public SidebarButton(File image) {
@@ -28,7 +30,7 @@ public class SidebarButton extends JButton {
         panel = new JPanel();
         JLabel label;
         try {
-            label = new JLabel(new ImageIcon(ImageIO.read(image)));
+            label = new JLabel(new ImageIcon(ImageIO.read(image).getScaledInstance(IMAGE_WIDTH, IMAGE_WIDTH, Image.SCALE_FAST)));
         } catch (IOException e) {
             label = new ScaledLabel("Error");
             e.printStackTrace();
