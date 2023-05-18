@@ -40,11 +40,11 @@ public class Broker {
      * Next transaction for all stocks
      */
     public static void newTransactions() {
-        System.out.println("new transaction requested");
+        // new transactions for all stocks
         for(Stock s : stocks ) {
             s.newTransaction();
-            // System.out.println(s);
         }
+        // write trading histories
         dayWrite();
         monthWrite();
         yearWrite();
@@ -99,7 +99,6 @@ public class Broker {
             for(String p : prices) {
                 writer.append(p);
             }
-            // System.out.println("Writing successful");
         }catch (IOException e) {
             System.out.println("Error writing CSV file: " + e);
         }finally {
@@ -178,14 +177,6 @@ public class Broker {
         writeCSV("./data/year-history.csv", prices, numberOfYearPrices);
     }
 
-
-    /**
-     * Writes price history data of alls stocks
-     */
-    public static void writeHistories() {
-
-
-    }
 
     public static ArrayList<Stock> getStocks() {
         return stocks;

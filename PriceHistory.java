@@ -42,13 +42,11 @@ public class PriceHistory {
         dayHistory.add(previousClose);
 
         monthHistory.add(previousClose);
-        System.out.println(monthHistory);
         if(monthHistory.size() > 30) {
             monthHistory.remove(0);
         }
 
         yearHistory.add(previousClose);
-        System.out.println(yearHistory);
         if(yearHistory.size() > 360) {
             yearHistory.remove(0);
         }
