@@ -7,6 +7,8 @@
  */
 
 import java.util.*;
+
+
 import java.io.*;
 
 public class Broker {
@@ -21,7 +23,7 @@ public class Broker {
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
         ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
 
-        for(int i = 0; i < rawStocks.size(); i++) {
+        for(int i = 1; i < rawStocks.size() - 1; i++) {
             String[] tempStock = rawStocks.get(i);
             String[] tempPrice = rawPrices.get(i);
             
@@ -38,6 +40,7 @@ public class Broker {
      * Next transaction for all stocks
      */
     public static void newTransactions() {
+        System.out.println("new transaction requested");
         for(Stock s : stocks ) {
             s.newTransaction();
             // System.out.println(s);
@@ -70,21 +73,29 @@ public class Broker {
 
 
     /**
-     * Writes list of CSV line strings
+     * General stock history writer
      * @param csvPath path of file
      * @param prices formatted list of prices
+     * @param numberOfPrices the number of prices in history of each stock
      */
-    public static void writeCSV(String csvPath, ArrayList<String> prices) {
+    public static void writeCSV(String csvPath, ArrayList<String> prices, int numberOfPrices) {
         FileWriter writer = null;
         try {
             writer = new FileWriter(csvPath);
+
+            // truncate CSV file before writing
             writer.flush();
-            // String headers = "Ticker,";
-            // for(int i = 0; i < 100; i++) {
-            //     headers += i + ",";
-            // }
-            // int length = headers.length();
-            // writer.append(headers.substring(0, length - 1) + "\n");
+
+            // write header of CSV file
+            String headers = "Ticker,";
+            
+            for(int i = 0; i < numberOfPrices; i++) {
+                headers += i + ",";
+            }
+            int length = headers.length();
+            writer.append(headers.substring(0, length - 1) + "\n");
+
+            // write prices of each stock
             for(String p : prices) {
                 writer.append(p);
             }
@@ -103,16 +114,34 @@ public class Broker {
 
 
     /**
+     * General formatter for Double ArrayLists of prices
+     * @param prices
+     * @return
+     */
+    public static String formatPriceHistory(ArrayList<Double> prices) {
+        String formatted = ",";
+        for(Double s : prices) {
+            formatted += s + ",";
+        }
+        return formatted.substring(0, formatted.length() - 1) + "\n";
+    }
+
+
+    /**
      * Write day price history to CSV
      */
     public static void dayWrite() {
+        // number of trades in day
+        int numberOfDayPrices = stocks.get(0).getPriceHistory().getDayHistory().size();
+        
+        // put formatted strings into ArrayList
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
-            String price = s.getPriceHistory().dayPricesFormatted();
-            System.out.println(price);
-            prices.add(price);
+            String stockDayHistory = s.getTicker() + formatPriceHistory(s.getPriceHistory().getDayHistory());
+            prices.add(stockDayHistory);
         }
-        writeCSV("./data/day-history.csv", prices);
+
+        writeCSV("./data/day-history.csv", prices, numberOfDayPrices);
     }
 
 
@@ -120,11 +149,16 @@ public class Broker {
      * Write month price history to CSV
      */
     public static void monthWrite() {
+        // number of trades in past month
+        int numberOfMonthPrices = stocks.get(0).getPriceHistory().getMonthHistory().size();
+        
+        // put formatted strings into ArrayList
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
-            prices.add(s.getPriceHistory().monthPricesFormatted());
+            String stockMonthHistory = s.getTicker() + formatPriceHistory(s.getPriceHistory().getMonthHistory());
+            prices.add(stockMonthHistory);
         }
-        writeCSV("./data/month-history.csv", prices);
+        writeCSV("./data/month-history.csv", prices, numberOfMonthPrices);
     }
 
 
@@ -132,11 +166,16 @@ public class Broker {
      * Write year price history to CSV
      */
     public static void yearWrite() {
+        // number of trades in past year
+        int numberOfYearPrices = stocks.get(0).getPriceHistory().getYearHistory().size();
+        
+        // put formatted strings into ArrayList
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
-            prices.add(s.getPriceHistory().yearPricesFormatted());
+            String stockYearHistory = s.getTicker() + formatPriceHistory(s.getPriceHistory().getYearHistory());
+            prices.add(stockYearHistory);
         }
-        writeCSV("./data/year-history.csv", prices);
+        writeCSV("./data/year-history.csv", prices, numberOfYearPrices);
     }
 
 

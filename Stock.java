@@ -61,7 +61,7 @@ public class Stock {
         priceHistory = new PriceHistory(ticker);
 
         priceHistory.addIntraDay(transactionPrice);
-        priceHistory.addDay(previousClose);
+        priceHistory.newDay(previousClose);
     }
 
 
@@ -85,7 +85,7 @@ public class Stock {
         priceHistory = new PriceHistory(ticker);
 
         priceHistory.addIntraDay(transactionPrice);
-        priceHistory.addDay(transactionPrice);
+        priceHistory.newDay(transactionPrice);
     }
 
 
@@ -118,7 +118,7 @@ public class Stock {
         priceHistory = new PriceHistory(ticker);
 
         priceHistory.addIntraDay(transactionPrice);
-        priceHistory.addDay(previousClose);
+        priceHistory.newDay(previousClose);
     }
 
 
@@ -216,9 +216,9 @@ public class Stock {
         // update day history data;
         priceHistory.addIntraDay(transactionPrice);
 
-        if(PriceHistory.getDayTransactions() % 30 == 0) {
-            newDay();
-        }
+        // if(PriceHistory.getDayTransactions() % 30 == 0) {
+        //     newDay();
+        // }
 
     }
 
@@ -229,7 +229,7 @@ public class Stock {
     public void newDay() {
         /* Record day's trading metrics */
         previousClose = transactionPrice;
-        priceHistory.addDay(previousClose);
+        priceHistory.newDay(previousClose);
 
         /* Reset day trading metrics */
         priceHistory.newDay(previousClose);
