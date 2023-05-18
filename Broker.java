@@ -134,7 +134,7 @@ public class Broker {
         // put formatted strings into ArrayList
         ArrayList<String> prices = new ArrayList<String>();
         for(Stock s : stocks) {
-            String stockDayHistory = s.getTicker() + formatPriceHistory(s.getPriceHistory().getMonthHistory());
+            String stockDayHistory = s.getTicker() + formatPriceHistory(s.getPriceHistory().getDayHistory());
             prices.add(stockDayHistory);
         }
 
