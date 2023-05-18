@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class StocksPanel extends JPanel {
-    private ArrayList<Stock> stocks;
 
     public StocksPanel() {
         super();
-        stocks = new ArrayList<Stock>();
         reload();
         int color = 230;
         setBackground(new Color(color, color, color));
@@ -19,13 +17,9 @@ public class StocksPanel extends JPanel {
     public void reload() {
         GridLayout c = new GridLayout(0,4);
         removeAll();
-        stocks.clear();
         setLayout(c);
 
         for (Stock s : Broker.getStocks()) {
-
-            stocks.add(s); // to allow for manipulation later
-
             ScaledLabel stockName = new ScaledLabel();
             stockName.setText(s.getTicker() + " - " + s.getName());
             stockName.setFont(Options.getFont());
@@ -63,19 +57,25 @@ public class StocksPanel extends JPanel {
 
         Button stepTransaction = new Button("Step Transaction");
         stepTransaction.setFont(Options.getFont());
+        
+        Button stepTransaction100 = new Button("Step Transaction 100 times");
+        stepTransaction100.setFont(Options.getFont());
+        
+        add(stepTransaction, c);
+        add(stepTransaction100, c);
+        
         stepTransaction.addActionListener(e -> {
+            stepTransaction.setLabel("Loading...");
             Broker.newTransactions();
             reload();
         });
-        Button stepTransaction100 = new Button("Step Transaction 100 times");
-        stepTransaction100.setFont(Options.getFont());
         stepTransaction100.addActionListener(e -> {
+            stepTransaction100.setLabel("Loading...");
             for (int i = 0; i < 100; i++)
                 Broker.newTransactions();
             reload();
         });
-        add(stepTransaction, c);
-        add(stepTransaction100, c);
+        
         revalidate();
         repaint();
     }
