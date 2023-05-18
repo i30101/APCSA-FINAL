@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 # read csv data
 dataframes = {
     "day" : pd.read_csv("./data/day-history.csv"),
-    # "month" : pd.read_csv("./data/month-history.csv"),
-    # "year" : pd.read_csv("./data/year-history.csv")
+    "month" : pd.read_csv("./data/month-history.csv"),
+    "year" : pd.read_csv("./data/year-history.csv")
 }
 
 for frame in dataframes:
-    print(dataframes[frame].to_string())
+    print(str(dataframes[frame]))
 
 # timeframes for stock data
 frames = list(dataframes.keys())
