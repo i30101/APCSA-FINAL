@@ -15,11 +15,14 @@ dataframes = {
     # "year" : pd.read_csv("./data/year-history.csv")
 }
 
+for frame in dataframes:
+    print(dataframes[frame].to_string())
+
 # timeframes for stock data
 frames = list(dataframes.keys())
 
 # all stock tickers
-tickers = list(dataframes["day"][0].values)
+tickers = list(dataframes["day"]["Ticker"].values)
 
 
 # extract data for desired ticker

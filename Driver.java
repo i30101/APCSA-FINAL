@@ -42,10 +42,10 @@ public class Driver {
         // Stock intel = new Stock("Intel Corporation", "INTC");
         // System.out.println(intel);
 
-        Broker broker = new Broker();
-        for(int i = 0; i < 99; i++) {
-            broker.newTransactions();
-        }
-        broker.writeHistories();
+        // Broker broker = new Broker();
+        // for(int i = 0; i < 99; i++) {
+        //     broker.newTransactions();
+        // }
+        // broker.writeHistories();
     }
 }
