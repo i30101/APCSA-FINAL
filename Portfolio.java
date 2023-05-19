@@ -13,6 +13,9 @@ public class Portfolio {
 
     public Portfolio() {
         ownedStocks = new Hashtable<>();
+        for(Stock stock : Broker.getStocks()){
+            ownedStocks.put(stock.getTicker(), 0);
+        }
         balance = 10000;
     }
 

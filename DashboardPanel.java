@@ -11,18 +11,26 @@ public class DashboardPanel extends JPanel {
         setBackground(new Color(color, color, color));
     }
 
-    public void reload(){
-        setLayout(new GridLayout(0,1));
+    public void reload() {
+        setLayout(new GridLayout(0, 1));
         removeAll();
-        add(new ScaledLabel("Hello, "+Portfolio.getSystemName()+"    Balance: $ "+Broker.formatMoney(Portfolio.getBalance())+"\n    Net Worth: $ "+Broker.formatMoney(Portfolio.totalNetworth())+"\n"));
-        GridLayout c = new GridLayout(0,4);
+        add(new ScaledLabel(
+                "Hello, " + Portfolio.getSystemName() + "    Balance: $ " + Broker.formatMoney(Portfolio.getBalance())
+                        + "\n    Net Worth: $ " + Broker.formatMoney(Portfolio.totalNetworth()) + "\n"));
+        GridLayout c = new GridLayout(0, 4);
         JPanel ownedStocks = new JPanel();
         ownedStocks.setLayout(c);
-        for(String key : Portfolio.getOwnedStocks().keySet()){
+        for (String key : Portfolio.getOwnedStocks().keySet()) {
+            if (Portfolio.getOwnedStocks().get(key) == 0)
+                continue;
             ownedStocks.add(new ScaledLabel(Broker.getStock(key).getName()));
             ownedStocks.add(new ScaledLabel(key));
             ownedStocks.add(new ScaledLabel("Owned: " + Portfolio.getOwnedStocks().get(key)));
-            ownedStocks.add(new ScaledLabel("Value: $ " + Broker.formatMoney(Portfolio.getOwnedStocks().get(key) * Broker.getStock(key).getTransactionPrice())));
+            ownedStocks.add(new ScaledLabel("Value: $ " + Broker
+                    .formatMoney(Portfolio.getOwnedStocks().get(key) * Broker.getStock(key).getTransactionPrice())));
+        }
+        if (ownedStocks.getComponentCount() == 0) {
+            ownedStocks.add(new ScaledLabel("No stocks to display."));
         }
         add(ownedStocks);
     }

@@ -4,7 +4,6 @@
  * @version 1.0, 8 May 2023
  */
 
-import java.awt.Button;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -12,6 +11,7 @@ import java.awt.Font;
 import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
+    private String currentPanel;
     private StocksPanel stocksPanel;
     private DashboardPanel dashboardPanel;
     private OptionsPanel optionsPanel;
@@ -22,6 +22,7 @@ public class DisplayPanel extends JPanel {
     public DisplayPanel() {
         super();
         setLayout(new GridBagLayout());
+        currentPanel = "dashboard";
         stocksPanel = new StocksPanel();
         dashboardPanel = new DashboardPanel();
         optionsPanel = new OptionsPanel();
@@ -33,6 +34,7 @@ public class DisplayPanel extends JPanel {
     }
 
     public void openByID(String str) {
+        currentPanel = str;
         switch (str) {
             case "dashboard":
                 displayDashboard();
@@ -81,5 +83,13 @@ public class DisplayPanel extends JPanel {
         add(new ScaledLabel("Matthew !!!!"));
         revalidate();
         repaint();
+    }
+
+    public void reloadOpenPanel(){
+        openByID(currentPanel);
+    }
+
+    public String getCurrentPanel(){
+        return currentPanel;
     }
 }

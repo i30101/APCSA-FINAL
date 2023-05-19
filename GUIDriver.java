@@ -25,6 +25,9 @@ public class GUIDriver {
 		JPanel gridPanel = new JPanel();
 		mainGUI.add(gridPanel);
 
+		// load options before render
+		Options.loadOptions();
+
 		// buttons placed in arraylist to allow for programmatic selection
 		ArrayList<SidebarButton> buttons = new ArrayList<SidebarButton>();
 
@@ -97,5 +100,17 @@ public class GUIDriver {
 		dashboardButton.select();
 		displayPanel.displayDashboard();
 		mainGUI.setWindowTitle(selected);
+
+		// reload the displayPanel every couple seconds for live updates
+		// made with help from github copilot
+		Timer timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(displayPanel.getCurrentPanel() != "options")
+					displayPanel.openByID(selected);
+			}
+		});
+		timer.setRepeats(true);
+		timer.start();
 	}
 }

@@ -109,7 +109,7 @@ public class StockOptionsWindow extends JFrame {
 				int amount = Integer.parseInt(buyAmountInput.getText());
 				double cost = Portfolio.buyStock(stock.getTicker(), amount);
 				if (cost != -1) {
-					JOptionPane.showMessageDialog(null,"Successfully bought " + amount + " shares of " + stock.getTicker() + " for " + cost);
+					if(Options.popupsEnabled()) JOptionPane.showMessageDialog(null,"Successfully bought " + amount + " shares of " + stock.getTicker() + " for " + cost);
 					remove(panel);
 					reload(stock);
 				} else {
