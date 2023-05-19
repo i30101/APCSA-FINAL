@@ -1,7 +1,6 @@
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -15,20 +14,25 @@ public class StocksPanel extends JPanel {
     }
 
     public void reload() {
-        GridLayout c = new GridLayout(0,4);
+        GridLayout c = new GridLayout(0,1);
         removeAll();
         setLayout(c);
 
+        int alternate = 0;
         for (Stock s : Broker.getStocks()) {
+            alternate = (alternate + 1) % 2;
+            JPanel panel = new JPanel();
+            panel.setBackground(new Color(230-(20*alternate),230-(20*alternate),230-(20*alternate)));
+            panel.setLayout(new GridLayout(1,4));
             ScaledLabel stockName = new ScaledLabel();
             stockName.setText(s.getTicker() + " - " + s.getName());
             stockName.setFont(Options.getFont());
-            add(stockName, c);
+            panel.add(stockName);
 
             ScaledLabel priceLabel = new ScaledLabel();
             priceLabel.setText("$ " + s.getTransactionPrice());
             priceLabel.setFont(Options.getFont());
-            add(priceLabel, c);
+            panel.add(priceLabel);
 
             ScaledLabel dayChangeLabel = new ScaledLabel();
             dayChangeLabel.setFont(Options.getFont());
@@ -43,7 +47,7 @@ public class StocksPanel extends JPanel {
             } else {
                 dayChangeLabel.setText("" + s.getDayChange());
             }
-            add(dayChangeLabel, c);
+            panel.add(dayChangeLabel);
 
             Button button = new Button("Options");
             button.setFont(Options.getFont());
@@ -51,7 +55,8 @@ public class StocksPanel extends JPanel {
                 new StockOptionsWindow(s, button.getX(),button.getY() + button.getHeight());
             });
 
-            add(button, c);
+            panel.add(button);
+            add(panel);
 
         }
 

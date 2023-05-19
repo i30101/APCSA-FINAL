@@ -13,6 +13,8 @@ import javax.swing.*;
 
 public class DisplayPanel extends JPanel {
     private StocksPanel stocksPanel;
+    private DashboardPanel dashboardPanel;
+    private OptionsPanel optionsPanel;
     Font font = new Font("Verdana", Font.PLAIN, 10);
     GridBagConstraints c;
     
@@ -21,6 +23,8 @@ public class DisplayPanel extends JPanel {
         super();
         setLayout(new GridBagLayout());
         stocksPanel = new StocksPanel();
+        dashboardPanel = new DashboardPanel();
+        optionsPanel = new OptionsPanel();
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -47,7 +51,9 @@ public class DisplayPanel extends JPanel {
 
     public void displayDashboard() {
         removeAll();
-        add(new ScaledLabel("Dashboard"));
+        repaint();
+        dashboardPanel.reload();
+        add(dashboardPanel,c);
         revalidate();
         repaint();
     }
@@ -63,53 +69,9 @@ public class DisplayPanel extends JPanel {
 
     public void displayOptions() {
         removeAll();
-
-        GridBagConstraints c = new GridBagConstraints();
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.NONE;
-
-        ScaledLabel optionsLabel = new ScaledLabel("Options");
-        optionsLabel.setFont(font);
-        add(optionsLabel, c);
-
-        ScaledLabel fontSizeLabel = new ScaledLabel("Font size: ");
-        fontSizeLabel.setFont(font);
-
-        JTextField fontSizeInput = new JTextField(4);
-        fontSizeInput.setFont(font);
-        fontSizeInput.setText("" + Options.getFont().getSize());
-
-        c.gridy = 1;
-        c.gridx = 0;
-        add(fontSizeLabel, c);
-        c.gridx = 1;
-        add(fontSizeInput, c);
-
-        c.gridy = 2;
-        c.gridx = 0;
-        Button applyButton = new Button("Apply");
-        applyButton.setFont(font);
-        applyButton.addActionListener(e -> {
-            try {
-                int fontSize = Integer.parseInt(fontSizeInput.getText());
-                if (fontSize > 0 && fontSize < 50) {
-                    font = new Font("Verdana", Font.PLAIN, fontSize);
-                    Options.setFont(font);
-                    displayOptions();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Please enter a valid font size between 1 and 50");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-        add(applyButton, c);
+        repaint();
+        optionsPanel.reload();
+        add(optionsPanel,c);
         revalidate();
         repaint();
     }
