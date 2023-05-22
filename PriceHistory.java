@@ -8,6 +8,11 @@
 import java.util.*;
 
 public class PriceHistory {
+    // total number of days that have elapsed
+    private static int days = 0;
+
+    private String ticker;
+
     private ArrayList<Double> dayHistory;
     private ArrayList<Double> monthHistory;
     private ArrayList<Double> yearHistory;
@@ -18,6 +23,7 @@ public class PriceHistory {
      * @param pTicker to identify history
      */
     public PriceHistory(String pTicker) {
+        ticker = pTicker;
         dayHistory = new ArrayList<Double>();
         monthHistory = new ArrayList<Double>();
         yearHistory = new ArrayList<Double>();
@@ -38,6 +44,9 @@ public class PriceHistory {
      * @param previousClose the closing price of the previous day, or the starting price
      */
     public void newDay(double previousClose) {
+        if(ticker.equals("AAPL")) {
+            days++;
+        }
         dayHistory = new ArrayList<Double>();
         dayHistory.add(previousClose);
 
@@ -71,4 +80,8 @@ public class PriceHistory {
     public ArrayList<Double> getYearHistory() {
         return yearHistory;
     } 
+
+    public static int getDays() {
+        return days;
+    }
 }

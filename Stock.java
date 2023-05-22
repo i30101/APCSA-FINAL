@@ -127,7 +127,7 @@ public class Stock {
      * @param d unshorted double
      * @return double with two decimal places
      */
-    private double round(double d) {
+    public static double round(double d) {
         return Math.round(d * 100.0) / 100.0;
     }
 
@@ -275,7 +275,7 @@ public class Stock {
     }
 
     public double getTransactionPrice() {
-        return Broker.formatBalance(transactionPrice);
+        return Stock.round(transactionPrice);
     }
 
     public double getLastTransactionChange() {
