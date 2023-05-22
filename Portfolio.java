@@ -31,9 +31,9 @@ public class Portfolio {
             if(ownedStocks.get(ticker) == null)
                 ownedStocks.put(ticker, 0);
             ownedStocks.put(ticker, ownedStocks.get(ticker) + amount);
-            balance -= Broker.formatBalance(currentStockPrice * amount);
-            balance = Broker.formatBalance(balance);
-            return Broker.formatBalance(currentStockPrice * amount);
+            balance -= Stock.round(currentStockPrice * amount);
+            balance = Stock.round(balance);
+            return Stock.round(currentStockPrice * amount);
         }
         return -1;
     }
@@ -48,9 +48,9 @@ public class Portfolio {
         double currentStockPrice = Broker.getStock(ticker).getTransactionPrice();
         if(ownedStocks.get(ticker) >= amount){
             ownedStocks.put(ticker, ownedStocks.get(ticker) - amount);
-            balance += Broker.formatBalance(currentStockPrice * amount);
-            balance = Broker.formatBalance(balance);
-            return Broker.formatBalance(currentStockPrice * amount);
+            balance += Stock.round(currentStockPrice * amount);
+            balance = Stock.round(balance);
+            return Stock.round(currentStockPrice * amount);
         }
         return -1;
     }
@@ -72,16 +72,16 @@ public class Portfolio {
     
     public static void addMoney(int n){
         balance += n;
-        balance = Broker.formatBalance(balance);
+        balance = Stock.round(balance);
     }
 
     public static void removeMoney(int n){
         balance -= n;
-        balance = Broker.formatBalance(balance);
+        balance = Stock.round(balance);
     }
 
     public static double getBalance() {
-        return Broker.formatBalance(balance);
+        return Stock.round(balance);
     }
 
     public static String getSystemName() {
@@ -93,6 +93,6 @@ public class Portfolio {
         for(String key : ownedStocks.keySet()){
             networth += Broker.getStock(key).getTransactionPrice() * ownedStocks.get(key);
         }
-		return Broker.formatBalance(networth);
+		return Stock.round(networth);
 	}
 }

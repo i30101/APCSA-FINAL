@@ -36,7 +36,7 @@ public class DashboardPanel extends JPanel {
         overviewPanel.add(new ScaledLabel("Hello " + Portfolio.getSystemName()));
         overviewPanel.add(new ScaledLabel("Your balance is: $ " + Portfolio.getBalance()));
         overviewPanel.add(new ScaledLabel("Your net worth is: $ " + Portfolio.getTotalNetworth()));
-        overviewPanel.add(new ScaledLabel("Your total profit is: $ " + (Portfolio.getTotalNetworth() - 10000)));
+        overviewPanel.add(new ScaledLabel("Your total profit is: $ " + Stock.round(Portfolio.getTotalNetworth() - 10000)));
         overviewPanel.add(new ScaledLabel("Date: April 15, 1989"));
         overviewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.gridy = 0;
@@ -55,7 +55,7 @@ public class DashboardPanel extends JPanel {
             row.add(new ScaledLabel(ticker));
             row.add(new ScaledLabel("Owned: " + Portfolio.getOwnedStocks().get(ticker)));
             double totalValue = Portfolio.getOwnedStocks().get(ticker) * Broker.getStock(ticker).getTransactionPrice();
-            row.add(new ScaledLabel("Value: $ " + Broker.formatBalance(totalValue)));
+            row.add(new ScaledLabel("Value: $ " + Stock.round(totalValue)));
             row.add(new ScaledLabel(Broker.getStock(ticker).getDayChangeFormatted()));
             stocksOverviewPanel.add(row);
         }

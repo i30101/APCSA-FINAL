@@ -83,7 +83,7 @@ public class StockOptionsWindow extends JFrame {
 		ScaledLabel amountOwned = new ScaledLabel(""+Portfolio.getStockAmount(stock.getTicker()));
 		panel.add(amountOwned);
 
-		ScaledLabel amountOwnedWorth = new ScaledLabel("$ "+Broker.formatBalance(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
+		ScaledLabel amountOwnedWorth = new ScaledLabel("$ "+Stock.round(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
 		panel.add(amountOwnedWorth);
 
 		ScaledLabel label = new ScaledLabel("Buy: ");
@@ -140,7 +140,7 @@ public class StockOptionsWindow extends JFrame {
 					}
 				}
 				int amount = Integer.parseInt(sellAmountInput.getText());
-				double cost = Broker.formatBalance(Portfolio.sellStock(stock.getTicker(), amount));
+				double cost = Stock.round(Portfolio.sellStock(stock.getTicker(), amount));
 				if (cost != -1) {
 					if(Options.popupsEnabled()) JOptionPane.showMessageDialog(null,"Successfully sold " + amount + " shares of " + stock.getTicker() + " for " + cost);
 					remove(panel);
