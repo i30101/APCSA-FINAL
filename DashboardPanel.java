@@ -7,7 +7,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 public class DashboardPanel extends JPanel {
 
@@ -37,7 +36,7 @@ public class DashboardPanel extends JPanel {
         overviewPanel.add(new ScaledLabel("Hello " + Portfolio.getSystemName()));
         overviewPanel.add(new ScaledLabel("Your balance is: $ " + Portfolio.getBalance()));
         overviewPanel.add(new ScaledLabel("Your net worth is: $ " + Portfolio.getTotalNetworth()));
-        overviewPanel.add(new ScaledLabel("Your total profit is: $ " + (10000 - Portfolio.getBalance())));
+        overviewPanel.add(new ScaledLabel("Your total profit is: $ " + (Portfolio.getTotalNetworth() - 10000)));
         overviewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.gridy = 0;
         add(overviewPanel,c);
