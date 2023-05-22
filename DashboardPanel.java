@@ -7,7 +7,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 public class DashboardPanel extends JPanel {
 
