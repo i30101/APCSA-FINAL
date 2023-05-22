@@ -18,33 +18,12 @@ public class StocksPanel extends JPanel {
         removeAll();
         setLayout(c);
 
-        int alternate = 0;
+        int alternate = 1;
         add(new ScaledLabel("Stocks", (int) (Options.getFont().getSize() * 1.5)));
         for (Stock s : Broker.getStocks()) {
             addStockRow(s, alternate);
             alternate = (alternate + 1) % 2;
         }
-
-        Button stepTransaction = new Button("Step Transaction");
-        stepTransaction.setFont(Options.getFont());
-
-        Button stepTransaction100 = new Button("Step Transaction 100 times");
-        stepTransaction100.setFont(Options.getFont());
-
-        add(stepTransaction, c);
-        add(stepTransaction100, c);
-
-        stepTransaction.addActionListener(e -> {
-            stepTransaction.setLabel("Loading...");
-            Broker.newTransactions();
-            reload();
-        });
-        stepTransaction100.addActionListener(e -> {
-            stepTransaction100.setLabel("Loading...");
-            for (int i = 0; i < 100; i++)
-                Broker.newTransactions();
-            reload();
-        });
 
         revalidate();
         repaint();
@@ -87,6 +66,6 @@ public class StocksPanel extends JPanel {
 
         panel.add(button);
         add(panel);
-        
+
     }
 }

@@ -37,6 +37,7 @@ public class DashboardPanel extends JPanel {
         overviewPanel.add(new ScaledLabel("Your balance is: $ " + Portfolio.getBalance()));
         overviewPanel.add(new ScaledLabel("Your net worth is: $ " + Portfolio.getTotalNetworth()));
         overviewPanel.add(new ScaledLabel("Your total profit is: $ " + (Portfolio.getTotalNetworth() - 10000)));
+        overviewPanel.add(new ScaledLabel("Date: April 15, 1989"));
         overviewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.gridy = 0;
         add(overviewPanel,c);
