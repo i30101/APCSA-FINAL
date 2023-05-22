@@ -56,7 +56,7 @@ public class PriceHistory {
         }
 
         yearHistory.add(previousClose);
-        if(yearHistory.size() > 360) {
+        if(yearHistory.size() > 365) {
             yearHistory.remove(0);
         }
     }
