@@ -54,7 +54,7 @@ public class Options {
 	 * @return the font.
 	 */
 	public static Font getFont() {
-		return new Font("Verdana", Font.PLAIN, Integer.parseInt(options.get("fontsize")));
+		return new Font("Verdana", Font.PLAIN, Integer.parseInt(options.get("fontsize").split("\r")[0]));
 	}
 
 	/**
