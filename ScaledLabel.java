@@ -10,4 +10,9 @@ public class ScaledLabel extends JLabel {
 		super(text);
 		setFont(Options.getFont());
 	}
+
+	public ScaledLabel(String text, int fontSize){
+		super(text);
+		setFont(Options.getFont(fontSize));
+	}
 }

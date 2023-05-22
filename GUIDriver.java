@@ -96,14 +96,19 @@ public class GUIDriver {
 		mainGUI.add(gridPanel);
 		mainGUI.setSize(mainGUI.getMinimumSize().width + 10, mainGUI.getMinimumSize().height + 10);
 
+		// Open fullscreen if option is enabled
+		if (Options.getStartFullscreen())
+			mainGUI.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		// set the default display to the dashboard
 		dashboardButton.select();
 		displayPanel.displayDashboard();
+		displayPanel.reloadOpenPanel();
 		mainGUI.setWindowTitle(selected);
 
 		// reload the displayPanel every couple seconds for live updates
 		// made with help from github copilot
-		Timer timer = new Timer(1000, new ActionListener() {
+		Timer timer = new Timer(3000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(displayPanel.getCurrentPanel() != "options")

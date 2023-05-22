@@ -31,6 +31,7 @@ public class OptionsPanel extends JPanel {
         optionsLabel.setFont(Options.getFont());
         add(optionsLabel, c);
 
+
         ScaledLabel fontSizeLabel = new ScaledLabel("Font size: ");
         fontSizeLabel.setFont(Options.getFont());
         c.gridy = 1;
@@ -42,15 +43,31 @@ public class OptionsPanel extends JPanel {
         c.gridx = 1;
         add(fontSizeInput, c);
 
-        c.gridx = 0;
-        c.gridy = 2;
+        
         ScaledLabel togglePopups = new ScaledLabel("Toggle buy/sell popups: ");
         togglePopups.setFont(Options.getFont());
+        c.gridx = 0;
+        c.gridy = 2;
         add(togglePopups, c);
-        c.gridx = 1;
+
         JRadioButton togglePopupsButton = new JRadioButton();
+        togglePopupsButton.setBackground(new Color(230, 230, 230));
         togglePopupsButton.setSelected(Options.popupsEnabled());
+        c.gridx = 1;
         add(togglePopupsButton, c);
+
+
+        ScaledLabel startFullscreen = new ScaledLabel("Start in fullscreen: ");
+        startFullscreen.setFont(Options.getFont());
+        c.gridx = 0;
+        c.gridy = 3;
+        add(startFullscreen, c);
+
+        JRadioButton startFullscreenButton = new JRadioButton();
+        startFullscreenButton.setBackground(new Color(230, 230, 230));  
+        startFullscreenButton.setSelected(Options.getStartFullscreen());
+        c.gridx = 1;
+        add(startFullscreenButton, c);
 
         c.gridy++;
         c.gridx = 0;
@@ -66,8 +83,10 @@ public class OptionsPanel extends JPanel {
                     else
                         Options.setFont(new Font("Verdana", Font.PLAIN, fontSize));
                     Options.setPopups(togglePopupsButton.isSelected());
+                    Options.setStartFullscreen(startFullscreenButton.isSelected());
                     reload();
                     Options.saveOptions();
+                    JOptionPane.showMessageDialog(null, "Options saved!");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

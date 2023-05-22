@@ -19,6 +19,7 @@ public class StocksPanel extends JPanel {
         setLayout(c);
 
         int alternate = 0;
+        add(new ScaledLabel("Stocks", (int) (Options.getFont().getSize() * 1.5)));
         for (Stock s : Broker.getStocks()) {
             addStockRow(s, alternate);
             alternate = (alternate + 1) % 2;
@@ -86,5 +87,6 @@ public class StocksPanel extends JPanel {
 
         panel.add(button);
         add(panel);
+        
     }
 }

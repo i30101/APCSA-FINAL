@@ -27,9 +27,6 @@ public class Options {
 		} catch (Exception e) {
 			System.out.println("Could not read file: " + e);
 		}
-		for (int i = 0; i < options.get("fontsize").length(); i++) {
-			System.out.println(i + " : " + options.get("fontsize").charAt(i));
-		}
 	}
 
 	public static void saveOptions() {
@@ -38,7 +35,6 @@ public class Options {
 			String keyName = options.keySet().toArray()[i].toString();
 			String keyValue = options.get(keyName);
 			optionsString[i] = keyName + ":" + keyValue;
-			System.out.println(optionsString[i]);
 		}
 		FileWriter writer;
 		try {
@@ -53,12 +49,22 @@ public class Options {
 	}
 
 	/**
-	 * Returns the font used by the program.
+	 * Returns the font.
 	 * 
-	 * @return the font used by the program.
+	 * @return the font.
 	 */
 	public static Font getFont() {
 		return new Font("Verdana", Font.PLAIN, Integer.parseInt(options.get("fontsize")));
+	}
+
+	/**
+	 * Returns the font used with a custom font size
+	 * 
+	 * @param size the size of the font.
+	 * @return the font used by the program.
+	 */
+	public static Font getFont(int size) {
+		return new Font("Verdana", Font.PLAIN, size);
 	}
 
 	/**
@@ -91,4 +97,23 @@ public class Options {
 		return options.get("popups").equals("true");
 	}
 
+	/**
+	 * Sets the fullscreen option
+	 * 
+	 * @param b whether or not the program should start in fullscreen.
+	 */
+	public static void setStartFullscreen(boolean b) {
+		String s = b ? "true" : "false";
+		options.put("startfullscreen", s);
+		saveOptions();
+	}
+
+	/**
+	 * Returns the fullscreen option
+	 * 
+	 * @return whether or not the program should start in fullscreen.
+	 */
+	public static boolean getStartFullscreen() {
+		return options.get("startfullscreen").equals("true");
+	}
 }

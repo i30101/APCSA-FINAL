@@ -172,9 +172,9 @@ public class Broker {
         writeCSV("./data/year-history.csv", prices, numberOfYearPrices);
     }
 
-    public static double formatMoney(double number) {
+    public static double formatBalance(double number) {
         // https://stackoverflow.com/questions/11701399/round-up-to-2-decimal-places-in-java
-        return Double.parseDouble(String.format("%.2f", Math.round(number * 100.0) / 100.0));
+        return Math.round(number * 100.0) / 100.d;
     }
 
     public static ArrayList<Stock> getStocks() {

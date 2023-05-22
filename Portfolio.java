@@ -31,8 +31,9 @@ public class Portfolio {
             if(ownedStocks.get(ticker) == null)
                 ownedStocks.put(ticker, 0);
             ownedStocks.put(ticker, ownedStocks.get(ticker) + amount);
-            balance -= Broker.formatMoney(currentStockPrice * amount);
-            return Broker.formatMoney(currentStockPrice * amount);
+            balance -= Broker.formatBalance(currentStockPrice * amount);
+            balance = Broker.formatBalance(balance);
+            return Broker.formatBalance(currentStockPrice * amount);
         }
         return -1;
     }
@@ -47,8 +48,9 @@ public class Portfolio {
         double currentStockPrice = Broker.getStock(ticker).getTransactionPrice();
         if(ownedStocks.get(ticker) >= amount){
             ownedStocks.put(ticker, ownedStocks.get(ticker) - amount);
-            balance += Broker.formatMoney(currentStockPrice * amount);
-            return Broker.formatMoney(currentStockPrice * amount);
+            balance += Broker.formatBalance(currentStockPrice * amount);
+            balance = Broker.formatBalance(balance);
+            return Broker.formatBalance(currentStockPrice * amount);
         }
         return -1;
     }
@@ -70,25 +72,27 @@ public class Portfolio {
     
     public static void addMoney(int n){
         balance += n;
+        balance = Broker.formatBalance(balance);
     }
 
     public static void removeMoney(int n){
         balance -= n;
+        balance = Broker.formatBalance(balance);
     }
 
     public static double getBalance() {
-        return balance;
+        return Broker.formatBalance(balance);
     }
 
     public static String getSystemName() {
         return SYSTEM_NAME;
     }
 
-	public static double totalNetworth() {
+	public static double getTotalNetworth() {
         double networth = balance;
         for(String key : ownedStocks.keySet()){
             networth += Broker.getStock(key).getTransactionPrice() * ownedStocks.get(key);
         }
-		return networth;
+		return Broker.formatBalance(networth);
 	}
 }

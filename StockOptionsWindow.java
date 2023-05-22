@@ -27,7 +27,7 @@ public class StockOptionsWindow extends JFrame {
 		// set up window
 		setLocation(x, y);
 		setTitle("Stock Options for " + stock.getTicker() + " - " + stock.getName());
-		setSize(400 * (Options.getFont().getSize() / 10), 200 * (Options.getFont().getSize() / 10));
+		setSize(450 * (Options.getFont().getSize() / 10), 200 * (Options.getFont().getSize() / 10));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
@@ -83,7 +83,7 @@ public class StockOptionsWindow extends JFrame {
 		ScaledLabel amountOwned = new ScaledLabel(""+Portfolio.getStockAmount(stock.getTicker()));
 		panel.add(amountOwned);
 
-		ScaledLabel amountOwnedWorth = new ScaledLabel("$ "+Broker.formatMoney(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
+		ScaledLabel amountOwnedWorth = new ScaledLabel("$ "+Broker.formatBalance(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
 		panel.add(amountOwnedWorth);
 
 		ScaledLabel label = new ScaledLabel("Buy: ");
@@ -140,7 +140,7 @@ public class StockOptionsWindow extends JFrame {
 					}
 				}
 				int amount = Integer.parseInt(sellAmountInput.getText());
-				double cost = Broker.formatMoney(Portfolio.sellStock(stock.getTicker(), amount));
+				double cost = Broker.formatBalance(Portfolio.sellStock(stock.getTicker(), amount));
 				if (cost != -1) {
 					if(Options.popupsEnabled()) JOptionPane.showMessageDialog(null,"Successfully sold " + amount + " shares of " + stock.getTicker() + " for " + cost);
 					remove(panel);

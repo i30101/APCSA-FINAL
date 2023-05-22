@@ -1,2 +1,3 @@
+startfullscreen:true
 popups:false
-fontsize:16
+fontsize:14
