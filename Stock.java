@@ -231,7 +231,7 @@ public class Stock {
         priceHistory.newDay(previousClose);
 
         /* Reset day trading metrics */
-        priceHistory.newDay(previousClose);
+        // priceHistory.newDay(previousClose);
     }
 
     /**

@@ -1,4 +1,3 @@
-
 /**
  * @version 1.0.0 9 May 2023
  * @author Andrew Kim and Dylan Nguyen
@@ -10,10 +9,14 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Broker {
+    private static int dayTransactions;
     private static ArrayList<Stock> stocks = new ArrayList<Stock>();
 
     public static void main(String[] args) {
+
+        dayTransactions = 0;
 
         stocks = new ArrayList<Stock>();
 
@@ -31,6 +34,16 @@ public class Broker {
 
         new Portfolio();
         new GUIDriver();
+
+        while(true) {
+            // wait half a second for each transaction
+            try{
+                Thread.sleep(2000);
+            }catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            newTransactions();
+        }
     }
 
     /**
@@ -38,8 +51,13 @@ public class Broker {
      */
     public static void newTransactions() {
         // new transactions for all stocks
+        dayTransactions++;
         for (Stock s : stocks) {
             s.newTransaction();
+            if(dayTransactions % 30 == 0) {
+                s.newDay();
+                dayTransactions = 0;
+            }
         }
         // write trading histories
         dayWrite();
