@@ -1,5 +1,2 @@
-data/day-history.csv
-data/month-history.csv
-data/year-history.csv
-data/companies.csv
-resources/options
+data/*.csv
+resources/*.txt
