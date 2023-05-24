@@ -220,4 +220,8 @@ public class Broker {
     public static int getSpeed() {
         return speed;
     }
+
+    public static String getDate() {
+        return ((PriceHistory.getDays()/12)+1)+"/"+(PriceHistory.getDays()%30)+"/"+((PriceHistory.getDays()/365)+1929);
+    }
 }

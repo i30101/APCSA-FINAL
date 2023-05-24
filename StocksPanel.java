@@ -23,6 +23,39 @@ public class StocksPanel extends JPanel {
             "Stocks - " + Broker.getDate() + " - Intra-day Transaction "
                 + Broker.getStock("AAPL").getPriceHistory().getDayHistory().size() + "/30",
                 (int) (Options.getFont().getSize() * 1.5)));
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(230, 230, 230));
+        panel.setLayout(new GridLayout(1, 4));
+        
+        ScaledLabel nameHeading = new ScaledLabel();
+        nameHeading.setText("Ticker - Price");
+        nameHeading.setFont(Options.getFont());
+        panel.add(nameHeading);
+
+        ScaledLabel priceHeading = new ScaledLabel();
+        priceHeading.setText("Price");
+        priceHeading.setFont(getFont());
+        panel.add(priceHeading);
+
+        ScaledLabel previousCloseHeading = new ScaledLabel();
+        previousCloseHeading.setText("Previous Close");
+        previousCloseHeading.setFont(Options.getFont());
+        panel.add(previousCloseHeading);
+
+        ScaledLabel dayChangeHeading = new ScaledLabel();
+        dayChangeHeading.setText("Day Change");
+        dayChangeHeading.setFont(Options.getFont());
+        panel.add(dayChangeHeading);
+
+        ScaledLabel optionsHeading = new ScaledLabel();
+        optionsHeading.setText("Options");
+        optionsHeading.setFont(Options.getFont());
+        panel.add(optionsHeading);
+
+        add(panel);
+
+
         for (Stock s : Broker.getStocks()) {
             addStockRow(s, alternate);
             alternate = (alternate + 1) % 2;
@@ -36,6 +69,7 @@ public class StocksPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setBackground(new Color(230 - (20 * alternate), 230 - (20 * alternate), 230 - (20 * alternate)));
         panel.setLayout(new GridLayout(1, 4));
+
         ScaledLabel stockName = new ScaledLabel();
         stockName.setText(s.getTicker() + " - " + s.getName());
         stockName.setFont(Options.getFont());
@@ -45,6 +79,11 @@ public class StocksPanel extends JPanel {
         priceLabel.setText("$ " + s.getTransactionPrice());
         priceLabel.setFont(Options.getFont());
         panel.add(priceLabel);
+
+        ScaledLabel previousClose = new ScaledLabel();
+        previousClose.setText("$" + s.getPreviousClose());
+        previousClose.setFont(Options.getFont());
+        panel.add(previousClose);
 
         ScaledLabel dayChangeLabel = new ScaledLabel();
         dayChangeLabel.setFont(Options.getFont());
