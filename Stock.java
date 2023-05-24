@@ -316,8 +316,8 @@ public class Stock {
 
     public String getDayChangeFormatted() {
         if(getDayChange() < 0)
-            return "<html><font color='red'>+" + getDayChange() + " (+" + getDayChangePercent() + "%)</font></html>";
+            return "<html><font color='red'>" + getDayChange() + " (" + getDayChangePercent() + "%)</font></html>";
         else
-            return "<html><font color='green'>" + getDayChange() + " (" + getDayChangePercent() + "%)</font></html>";
+            return "<html><font color='green'>+" + getDayChange() + " (+" + getDayChangePercent() + "%)</font></html>";
     }
 }

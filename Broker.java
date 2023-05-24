@@ -11,11 +11,12 @@ import java.io.*;
 
 
 public class Broker {
+    private static int speed;
     private static int dayTransactions;
     private static ArrayList<Stock> stocks = new ArrayList<Stock>();
 
     public static void main(String[] args) {
-
+        speed = 1000;
         dayTransactions = 0;
 
         stocks = new ArrayList<Stock>();
@@ -23,7 +24,7 @@ public class Broker {
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
         ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
 
-        for (int i = 1; i < rawStocks.size() - 1; i++) {
+        for (int i = 1; i < rawStocks.size() - 1; i++) {    
             String[] tempStock = rawStocks.get(i);
             String[] tempPrice = rawPrices.get(i);
 
@@ -38,7 +39,7 @@ public class Broker {
         while(true) {
             // wait half a second for each transaction
             try{
-                Thread.sleep(2000);
+                Thread.sleep(speed);
             }catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -210,5 +211,13 @@ public class Broker {
             }
         }
         return null;
+    }
+
+    public static int getDayTransactions() {
+        return dayTransactions;
+    }
+
+    public static int getSpeed() {
+        return speed;
     }
 }
