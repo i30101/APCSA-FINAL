@@ -108,7 +108,7 @@ public class GUIDriver {
 
 		// reload the displayPanel every couple seconds for live updates
 		// made with help from github copilot
-		Timer timer = new Timer(200, new ActionListener() {
+		Timer timer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(displayPanel.getCurrentPanel() != "options")

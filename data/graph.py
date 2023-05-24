@@ -46,6 +46,10 @@ def line_graph(title, x_label, y_label, data):
     # determine graph color
     col = "green" if data[0] < data[-1] else "red"
     
+    # optimize?
+    plt.rcParams["path.simplify"] = True
+    plt.rcParams['path.simplify_threshold'] = 1.0
+
     # size figure
     plt.rcParams["figure.figsize"] = [7, 5]
     plt.rcParams["figure.autolayout"] = True

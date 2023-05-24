@@ -6,16 +6,22 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class OptionsPanel extends JPanel {
     public OptionsPanel() {
         super();
         int color = 230;
         setBackground(new Color(color, color, color));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     public void reload() {
@@ -69,6 +75,31 @@ public class OptionsPanel extends JPanel {
         c.gridx = 1;
         add(startFullscreenButton, c);
 
+        JLabel simulationSpeedLabel = new JLabel("Simulation speed: ");
+        simulationSpeedLabel.setFont(Options.getFont());
+        c.gridx = 0;
+        c.gridy = 4;
+        add(simulationSpeedLabel, c);
+
+        JSlider simulationSpeedSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, Options.getSimulationSpeed());
+        simulationSpeedSlider.setMajorTickSpacing(1);
+        simulationSpeedSlider.setBackground(new Color(230, 230, 230));
+        c.gridx = 1;
+        c.gridy = 4;
+        add(simulationSpeedSlider, c);
+
+        JLabel simulationSpeedValue = new JLabel(""+Options.getSimulationSpeed());
+        simulationSpeedValue.setFont(Options.getFont());
+        c.gridx = 2;
+        c.gridy = 4;
+        add(simulationSpeedValue, c);
+        
+        simulationSpeedSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                simulationSpeedValue.setText("" + simulationSpeedSlider.getValue());
+            }
+        });
+
         c.gridy++;
         c.gridx = 0;
         Button applyButton = new Button("Apply");
@@ -84,6 +115,7 @@ public class OptionsPanel extends JPanel {
                         Options.setFont(new Font("Verdana", Font.PLAIN, fontSize));
                     Options.setPopups(togglePopupsButton.isSelected());
                     Options.setStartFullscreen(startFullscreenButton.isSelected());
+                    Options.setSimulationSpeed(simulationSpeedSlider.getValue());
                     reload();
                     Options.saveOptions();
                     JOptionPane.showMessageDialog(null, "Options saved!");
