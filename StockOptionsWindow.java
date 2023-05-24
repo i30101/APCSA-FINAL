@@ -10,7 +10,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -35,7 +34,7 @@ public class StockOptionsWindow extends JFrame {
 		reload(stock);
 	}
 
-	public void reload(Stock stock){
+	public void reload(Stock stock) {
 		revalidate();
 		repaint();
 		// set up layout
@@ -72,18 +71,19 @@ public class StockOptionsWindow extends JFrame {
 		ScaledLabel balanceAmount = new ScaledLabel("$ " + Portfolio.getBalance());
 		panel.add(balanceAmount);
 
-		double percentage = (stock.getTransactionPrice()/Portfolio.getBalance());
+		double percentage = (stock.getTransactionPrice() / Portfolio.getBalance());
 		percentage = Math.round(percentage * 1000) / 10.0;
-		ScaledLabel percentOfTotal = new ScaledLabel(stock.getTicker()+" : " + percentage + "%");
+		ScaledLabel percentOfTotal = new ScaledLabel(stock.getTicker() + " : " + percentage + "%");
 		panel.add(percentOfTotal);
 
 		ScaledLabel owned = new ScaledLabel("Owned: ");
 		panel.add(owned);
 
-		ScaledLabel amountOwned = new ScaledLabel(""+Portfolio.getStockAmount(stock.getTicker()));
+		ScaledLabel amountOwned = new ScaledLabel("" + Portfolio.getStockAmount(stock.getTicker()));
 		panel.add(amountOwned);
 
-		ScaledLabel amountOwnedWorth = new ScaledLabel("$ "+Stock.round(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
+		ScaledLabel amountOwnedWorth = new ScaledLabel(
+				"$ " + Stock.round(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
 		panel.add(amountOwnedWorth);
 
 		ScaledLabel label = new ScaledLabel("Buy: ");
@@ -102,19 +102,22 @@ public class StockOptionsWindow extends JFrame {
 				// https://www.tutorialspoint.com/java/character_isdigit.htm
 				for (int i = 0; i < buyAmountInput.getText().length(); i++) {
 					if (!Character.isDigit(buyAmountInput.getText().charAt(i))) {
-						JOptionPane.showMessageDialog(null,"Please enter a valid number.");
+						JOptionPane.showMessageDialog(null, "Please enter a valid number.");
 						return;
 					}
 				}
 				int amount = Integer.parseInt(buyAmountInput.getText());
 				double cost = Portfolio.buyStock(stock.getTicker(), amount);
 				if (cost != -1) {
-					if(Options.popupsEnabled()) JOptionPane.showMessageDialog(null,"Successfully bought " + amount + " shares of " + stock.getTicker() + " for " + cost);
+					if (Options.popupsEnabled())
+						JOptionPane.showMessageDialog(null,
+								"Successfully bought " + amount + " shares of " + stock.getTicker() + " for " + cost);
 					remove(panel);
 					reload(stock);
 				} else {
-					JOptionPane.showMessageDialog(null,"Could not buy stock. Please enter a lower number.");
-				};
+					JOptionPane.showMessageDialog(null, "Could not buy stock. Please enter a lower number.");
+				}
+				;
 			}
 		});
 		panel.add(buyButton);
@@ -135,19 +138,20 @@ public class StockOptionsWindow extends JFrame {
 				// https://www.tutorialspoint.com/java/character_isdigit.htm
 				for (int i = 0; i < sellAmountInput.getText().length(); i++) {
 					if (!Character.isDigit(sellAmountInput.getText().charAt(i))) {
-						JOptionPane.showMessageDialog(null,"Please enter a valid number.");
+						JOptionPane.showMessageDialog(null, "Please enter a valid number.");
 						return;
 					}
 				}
 				int amount = Integer.parseInt(sellAmountInput.getText());
 				double cost = Stock.round(Portfolio.sellStock(stock.getTicker(), amount));
 				if (cost != -1) {
-					if(Options.popupsEnabled()) JOptionPane.showMessageDialog(null,"Successfully sold " + amount + " shares of " + stock.getTicker() + " for " + cost);
+					if (Options.popupsEnabled())
+						JOptionPane.showMessageDialog(null,
+								"Successfully sold " + amount + " shares of " + stock.getTicker() + " for " + cost);
 					remove(panel);
 					reload(stock);
-				} else {
-					JOptionPane.showMessageDialog(null,"Could not sell stock. Please enter a lower number.");
-				};
+				} else
+					JOptionPane.showMessageDialog(null, "Could not sell stock. Please enter a lower number.");
 			}
 		});
 		panel.add(sellButton);
@@ -174,36 +178,9 @@ public class StockOptionsWindow extends JFrame {
 					System.out.println("Trying to run "
 							+ ("python ./data/graph.py " + graphOptions.getSelectedItem() + " " + stock.getTicker()));
 					String[] command = { "python", "./data/graph.py", (String) graphOptions.getSelectedItem(),
-							stock.getTicker() };
-					// sourced from
-					// https://stackoverflow.com/questions/5711084/java-runtime-getruntime-getting-output-from-executing-a-command-line-program
-					// execute python script to generate graph and grab the error stream if it
-					// exists
-					InputStream output = runtime.exec(command).getErrorStream();
-					int data = output.read();
-					String error = "";
-					while (data != -1) {
-						error += (char) data;
-						data = output.read();
-						// if there is a desync, there is probably missing data
-						if (error.indexOf("IndexError") != -1) {
-							JOptionPane.showMessageDialog(null, "Error: No data for " + graphOptions.getSelectedItem()
-									+ " graph of " + stock.getTicker());
-							break;
-						}
-						// catching 'no module' means that the libraries are not installed
-						if (error.indexOf("no module") != -1) {
-							JOptionPane.showMessageDialog(null,
-									"Error: Libraries not installed. Please run install.bat.");
-							break;
-						}
-						// general error catching
-						if (error.indexOf("Error") != -1) {
-							JOptionPane.showMessageDialog(null, "An error occured.");
-							break;
-						}
-
-					}
+							stock.getTicker()
+					};
+					runtime.exec(command).getErrorStream();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
