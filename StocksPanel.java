@@ -1,7 +1,7 @@
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class StocksPanel extends JPanel {
@@ -19,7 +19,10 @@ public class StocksPanel extends JPanel {
         setLayout(c);
 
         int alternate = 1;
-        add(new ScaledLabel("Stocks", (int) (Options.getFont().getSize() * 1.5)));
+        add(new ScaledLabel(
+            "Stocks - " + Broker.getDate() + " - Intra-day Transaction "
+                + Broker.getStock("AAPL").getPriceHistory().getDayHistory().size() + "/30",
+                (int) (Options.getFont().getSize() * 1.5)));
         for (Stock s : Broker.getStocks()) {
             addStockRow(s, alternate);
             alternate = (alternate + 1) % 2;
@@ -45,21 +48,12 @@ public class StocksPanel extends JPanel {
 
         ScaledLabel dayChangeLabel = new ScaledLabel();
         dayChangeLabel.setFont(Options.getFont());
-        if (s.getDayChange() > 0) {
-            dayChangeLabel.setText(
-                    "<html><font color='green'>+" + s.getDayChange() + " (+" + s.getDayChangePercent() + "%)"
-                            + "</font></html>");
-        } else if (s.getDayChange() < 0) {
-            dayChangeLabel
-                    .setText("<html><font color='red'>" + s.getDayChange() + " (" + s.getDayChangePercent() + "%)"
-                            + "</font></html>");
-        } else {
-            dayChangeLabel.setText("" + s.getDayChange());
-        }
+        dayChangeLabel.setText(s.getDayChangeFormatted());
         panel.add(dayChangeLabel);
 
-        Button button = new Button("Options");
+        JButton button = new JButton("Options");
         button.setFont(Options.getFont());
+        button.setBackground(new Color(245,245,245));
         button.addActionListener(e -> {
             new StockOptionsWindow(s, button.getX(), button.getY() + button.getHeight());
         });

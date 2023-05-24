@@ -38,7 +38,7 @@ public class Broker {
         while(true) {
             // wait half a second for each transaction
             try{
-                Thread.sleep(2000);
+                Thread.sleep(500);
             }catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -210,5 +210,9 @@ public class Broker {
             }
         }
         return null;
+    }
+
+    public static String getDate() {
+        return ((PriceHistory.getDays()/12)+1)+"/"+(PriceHistory.getDays()%30)+"/"+((PriceHistory.getDays()/365)+1929);
     }
 }
