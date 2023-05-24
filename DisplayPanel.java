@@ -6,6 +6,7 @@
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.*;
@@ -31,6 +32,7 @@ public class DisplayPanel extends JPanel {
         c.anchor = GridBagConstraints.NORTHWEST;
         c.weightx = 1;
         c.weighty = 1;
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     public void openByID(String str) {

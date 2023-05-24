@@ -39,7 +39,7 @@ public class Broker {
         while(true) {
             // wait half a second for each transaction
             try{
-                Thread.sleep(speed);
+                Thread.sleep(Options.getSimulationSpeedScaled());
             }catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

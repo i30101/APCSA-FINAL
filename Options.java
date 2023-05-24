@@ -116,4 +116,18 @@ public class Options {
 	public static boolean getStartFullscreen() {
 		return options.get("startfullscreen").equals("true");
 	}
+
+	public static void setSimulationSpeed(int speed){
+		options.put("simulationspeed", ""+speed);
+		saveOptions();
+	}
+
+	public static int getSimulationSpeed(){
+		return Integer.parseInt(options.get("simulationspeed"));
+	}
+
+	public static int getSimulationSpeedScaled(){
+		return 2500/Integer.parseInt(options.get("simulationspeed"));
+	}
+	
 }
