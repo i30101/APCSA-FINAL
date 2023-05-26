@@ -49,7 +49,7 @@ public class StocksPanel extends JPanel {
         panel.add(dayChangeHeading);
 
         ScaledLabel optionsHeading = new ScaledLabel();
-        optionsHeading.setText("Options");
+        optionsHeading.setText("");
         optionsHeading.setFont(Options.getFont());
         panel.add(optionsHeading);
 
@@ -86,6 +86,11 @@ public class StocksPanel extends JPanel {
         priceLabel.setText("$ " + s.getTransactionPrice());
         priceLabel.setFont(Options.getFont());
         panel.add(priceLabel);
+
+        ScaledLabel previousCloseScaledLabel = new ScaledLabel();
+        previousCloseScaledLabel.setText("$" + s.getPreviousClose());
+        previousCloseScaledLabel.setFont(Options.getFont());
+        panel.add(previousCloseScaledLabel);
 
         ScaledLabel dayChangeLabel = new ScaledLabel();
         dayChangeLabel.setFont(Options.getFont());

@@ -25,6 +25,12 @@ public class Stock {
     private double dayChange;
     private double dayChangePercent; // percent change for the day
 
+    /* Long-term trading metrics */
+    private double monthChange;
+    private double monthChangePercent;
+    private double yearChange;
+    private double yearChangePercent;
+
     /* Performance */
     private double outlook; // likelihood of a price increase
 
@@ -38,6 +44,7 @@ public class Stock {
 
     /**
      * Default Stock constructor (not to be used)
+     * Randomly generates stock metrics
      * 
      * @param pName   name of corporation, commodity, ETf, etc.
      * @param pTicker ticker of stock
@@ -54,6 +61,11 @@ public class Stock {
         previousClose = transactionPrice;
         dayChange = 0;
         dayChangePercent = 0;
+
+        monthChange = 0;
+        monthChangePercent = 0;
+        yearChange = 0;
+        yearChangePercent = 0;
 
         volatility = 1;
         yearLow = transactionPrice;
@@ -77,6 +89,11 @@ public class Stock {
         previousClose = transactionPrice;
         dayChange = 0;
         dayChangePercent = 0;
+
+        monthChange = 0;
+        monthChangePercent = 0;
+        yearChange = 0;
+        yearChangePercent = 0;
 
         volatility = 1;
         yearLow = transactionPrice;
@@ -110,6 +127,11 @@ public class Stock {
         previousClose = transactionPrice;
         dayChange = 0;
         dayChangePercent = 0;
+
+        monthChange = 0;
+        monthChangePercent = 0;
+        yearChange = 0;
+        yearChangePercent = 0;
 
         volatility = pVolatility;
         yearLow = transactionPrice;
@@ -210,16 +232,21 @@ public class Stock {
         dayChange = round(transactionPrice - previousClose);
         dayChangePercent = round(100 * dayChange / previousClose);
 
+        // change month metrics
+        double monthAgoPrice = priceHistory.getMonthHistory().get(0);
+        monthChange = round(transactionPrice - monthAgoPrice);
+        monthChangePercent = round(monthChange / monthAgoPrice);
+
+        // change year metrics
+        double yearAgoPrice = priceHistory.getYearHistory().get(0);
+        yearChange = round(transactionPrice - yearAgoPrice);
+        yearChangePercent = round(yearChange / yearAgoPrice);
+
         // change outlook
         outlook += factor * Math.random() * 0.005;
 
-        // update day history data;
+        // update day history data
         priceHistory.addIntraDay(transactionPrice);
-
-        // if(PriceHistory.getDayTransactions() % 30 == 0) {
-        // newDay();
-        // }
-
     }
 
     /**
@@ -229,9 +256,6 @@ public class Stock {
         /* Record day's trading metrics */
         previousClose = transactionPrice;
         priceHistory.newDay(previousClose);
-
-        /* Reset day trading metrics */
-        // priceHistory.newDay(previousClose);
     }
 
     /**
@@ -314,10 +338,30 @@ public class Stock {
         return priceHistory;
     }
 
-    public String getDayChangeFormatted() {
-        if(getDayChange() < 0)
-            return "<html><font color='red'>" + getDayChange() + " (" + getDayChangePercent() + "%)</font></html>";
-        else
-            return "<html><font color='green'>+" + getDayChange() + " (+" + getDayChangePercent() + "%)</font></html>";
+    /**
+     * Formats change as red if negative, green otherwise
+     * @param change raw price change
+     * @param changePercent
+     * @return
+     */
+    public String format(double change, double changePercent) {
+        if(getDayChange() < 0){
+            return "<html><font color='red'>" + change + " (" + changePercent + "%)</font></html>";
+        }else{
+            return "<html><font color='green'>+" + change + " (+" + changePercent  + "%)</font></html>";
+        }
     }
+
+    public String getDayChangeFormatted() {
+        return format(dayChange, dayChangePercent);
+    }
+
+    public String getMonthChangeFormatted() {
+        return format(monthChange, monthChangePercent);
+    }
+
+    public String getYearChangeFormatted() {
+        return format(yearChange, yearChangePercent);
+    }
+
 }

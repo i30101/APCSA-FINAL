@@ -61,20 +61,55 @@ public class DashboardPanel extends JPanel {
         stocksOverviewPanel.setLayout(new GridBagLayout());
         stocksOverviewPanel.add(new ScaledLabel("Assets", (int) (Options.getFont().getSize() * 1.5)));
         
+        // heading with columns
+        JPanel header = new JPanel();
+        header.setLayout(new GridLayout(0, 7));
+        header.add(new ScaledLabel("Stock"));
+        header.add(new ScaledLabel("Shares"));
+        header.add(new ScaledLabel("Cost"));
+        header.add(new ScaledLabel("Price"));
+        header.add(new ScaledLabel("Day Change"));
+        header.add(new ScaledLabel("Total Invested"));
+        header.add(new ScaledLabel("% of Portfolio"));
+        stocksConstraints.gridy++;
+        stocksOverviewPanel.add(header, stocksConstraints);
+
+
+        // metrics for owned stocks
         stocksConstraints.gridwidth = 10;
         for (String ticker : Portfolio.getOwnedStocks().keySet()) {
             if (Portfolio.getOwnedStocks().get(ticker) == 0)
                 continue;
             JPanel row = new JPanel();
-            row.setLayout(new GridLayout(0, 4));
-            row.add(new ScaledLabel(ticker + " - " + Broker.getStock(ticker).getName()));
-            row.add(new ScaledLabel("Owned: " + Portfolio.getOwnedStocks().get(ticker)));
-            double totalValue = Portfolio.getOwnedStocks().get(ticker) * Broker.getStock(ticker).getTransactionPrice();
-            row.add(new ScaledLabel("Value: $ " + Stock.round(totalValue)));
+            row.setLayout(new GridLayout(0, 7));
+
+            // ticker ot stock
+            row.add(new ScaledLabel(ticker));
+
+            // number of shares owned
+            row.add(new ScaledLabel("" + Portfolio.getOwnedStocks().get(ticker)));
+
+            // average amount spent on stock
+            row.add(new ScaledLabel("$" + Portfolio.averageSpentOnStock(ticker)));
+
+            // current stock price
+            row.add(new ScaledLabel("$" + Broker.getStock(ticker).getTransactionPrice()));
+
+            // change in stock price
             row.add(new ScaledLabel(Broker.getStock(ticker).getDayChangeFormatted()));
+
+            // total value invested in stock
+            double totalValue = Portfolio.getOwnedStocks().get(ticker) * Broker.getStock(ticker).getTransactionPrice();
+            row.add(new ScaledLabel("$" + Stock.round(totalValue)));
+
+            // percent of portfolio
+            row.add(new ScaledLabel(100 * Stock.round(totalValue / Portfolio.getTotalNetworth()) + "%"));
+
+
             stocksConstraints.gridy++;
             stocksOverviewPanel.add(row, stocksConstraints);
         }
+
         if (stocksOverviewPanel.getComponentCount() == 1) {
             JPanel row = new JPanel();
             row.add(new ScaledLabel("No stocks owned"));

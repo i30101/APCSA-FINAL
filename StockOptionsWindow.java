@@ -46,48 +46,47 @@ public class StockOptionsWindow extends JFrame {
 		// add components
 
 		// first row
-		ScaledLabel ticker = new ScaledLabel(stock.getTicker());
-		panel.add(ticker);
 
-		ScaledLabel currentPrice = new ScaledLabel("$ " + stock.getTransactionPrice());
-		panel.add(currentPrice);
-		ScaledLabel change = new ScaledLabel();
-		// change color based on if change is positive or negative
-		if (stock.getDayChange() > 0) {
-			change.setText(
-					"<html><font color='green'>+" + stock.getDayChange() + " (+" + stock.getDayChangePercent() + "%)"
-							+ "</font></html>");
-		} else if (stock.getDayChange() < 0) {
-			change.setText("<html><font color='red'>" + stock.getDayChange() + " (" + stock.getDayChangePercent() + "%)"
-					+ "</font></html>");
-		} else {
-			change.setText("Change: " + stock.getDayChange());
-		}
-		panel.add(change);
+		// ticker
+		panel.add(new ScaledLabel(stock.getTicker()));
 
-		ScaledLabel balance = new ScaledLabel("Current Balance: ");
-		panel.add(balance);
+		// current price
+		panel.add(new ScaledLabel("$ " + stock.getTransactionPrice()));
 
-		ScaledLabel balanceAmount = new ScaledLabel("$ " + Portfolio.getBalance());
-		panel.add(balanceAmount);
+		// day change
+		panel.add(new ScaledLabel(Broker.getStock(stock.getTicker()).getDayChangeFormatted()));
 
+		// 30-day trading metrics
+		panel.add(new ScaledLabel("Month / Year Change:"));
+		panel.add(new ScaledLabel(stock.getMonthChangeFormatted()));
+		panel.add(new ScaledLabel(stock.getYearChangeFormatted()));
+
+		// highs and lows
+		panel.add(new ScaledLabel("Year High / Low:"));
+		panel.add(new ScaledLabel("" + stock.getYearHigh()));
+		panel.add(new ScaledLabel("" + stock.getYearLow()));
+
+		// current balance label
+		panel.add(new ScaledLabel("Current Balance: "));
+
+		// current balance
+		panel.add(new ScaledLabel("$ " + Portfolio.getBalance()));
+
+		// @dylan what be this
 		double percentage = (stock.getTransactionPrice() / Portfolio.getBalance());
 		percentage = Math.round(percentage * 1000) / 10.0;
 		ScaledLabel percentOfTotal = new ScaledLabel(stock.getTicker() + " : " + percentage + "%");
 		panel.add(percentOfTotal);
 
-		ScaledLabel owned = new ScaledLabel("Owned: ");
-		panel.add(owned);
+		panel.add(new ScaledLabel("Owned: "));
 
-		ScaledLabel amountOwned = new ScaledLabel("" + Portfolio.getStockAmount(stock.getTicker()));
-		panel.add(amountOwned);
+		panel.add(new ScaledLabel("" + Portfolio.getStockAmount(stock.getTicker())));
 
 		ScaledLabel amountOwnedWorth = new ScaledLabel(
 				"$ " + Stock.round(stock.getTransactionPrice() * Portfolio.getStockAmount(stock.getTicker())));
 		panel.add(amountOwnedWorth);
 
-		ScaledLabel label = new ScaledLabel("Buy: ");
-		panel.add(label);
+		panel.add(new ScaledLabel("Buy: "));
 
 		JTextField buyAmountInput = new JTextField();
 		buyAmountInput.setFont(Options.getFont());
