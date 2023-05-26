@@ -1,4 +1,4 @@
 startfullscreen:true
 popups:false
+simulationspeed:1
 fontsize:14
-simulationspeed:5
