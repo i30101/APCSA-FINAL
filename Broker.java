@@ -33,6 +33,7 @@ public class Broker {
             stocks.add(new Stock(tempStock[0], tempStock[1], tempStock[2], price));
         }
 
+        Options.loadOptions();
         new Portfolio();
         new GUIDriver();
 

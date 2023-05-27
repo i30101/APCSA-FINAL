@@ -21,7 +21,7 @@ public class Options {
 				String next = scanner.next();
 				String key = next.split(":")[0];
 				String value = next.split(":")[1];
-				options.put(key, value);
+				options.put(key, value.split("\r")[0]);
 			}
 			scanner.close();
 		} catch (Exception e) {
@@ -54,7 +54,7 @@ public class Options {
 	 * @return the font.
 	 */
 	public static Font getFont() {
-		return new Font("Arial", Font.PLAIN, Integer.valueOf(options.get("fontsize").split("\r")[0]));
+		return new Font("Arial", Font.PLAIN, Integer.valueOf(options.get("fontsize")));
 	}
 
 	/**
