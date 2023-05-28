@@ -29,7 +29,7 @@ public class Portfolio {
         for(Stock stock : Broker.getStocks()) {
             spentOnStocks.put(stock.getTicker(), 0.0);
         }
-        balance = 10000;
+        balance = Options.getNetWorth();
     }
 
     /**
@@ -56,6 +56,9 @@ public class Portfolio {
 
             // add money spent on each stock
             spentOnStocks.put(ticker, spentOnStocks.get(ticker) + moneySpent);
+
+            // change share counts in Options
+            Options.setStockCount(ticker, ownedStocks.get(ticker));
 
             return Stock.round(currentStockPrice * amount);
         }
@@ -87,6 +90,9 @@ public class Portfolio {
              */
             double fractionSold = amount / numSharesOwned;
             spentOnStocks.put(ticker, Stock.round(spentOnStocks.get(ticker) * fractionSold));
+
+            // change share counts in Options
+            Options.setStockCount(ticker, ownedStocks.get(ticker));
 
             return Stock.round(currentStockPrice * amount);
         }

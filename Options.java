@@ -1,12 +1,19 @@
+/**
+ * @version 1.0.0 26 May 2023
+ * @author Andrew Kim and Dylan Nguyen
+ * 
+ * Manages stockbroker options and stores counts of each share
+ */
+
 import java.awt.Font;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Scanner;
+import java.util.*;
 
 public class Options {
 	private static Hashtable<String, String> options = new Hashtable<>();
+	private static Hashtable<String, Integer> shareCounts = new Hashtable<>();
 
 	/**
 	 * Loads options from file resources/options.txt
@@ -17,35 +24,81 @@ public class Options {
 		try {
 			Scanner scanner = new Scanner(new File(filepath));
 			scanner.useDelimiter("\n");
+			int count = 0;
 			while (scanner.hasNext()) {
 				String next = scanner.next();
 				String key = next.split(":")[0];
 				String value = next.split(":")[1];
-				options.put(key, value);
+				if(count < 5) {
+					options.put(key, value);
+				}else if(count < 4) {
+					shareCounts.put(key, Integer.parseInt(value));
+				}
+				count++;
 			}
 			scanner.close();
+			
+			// print hashtables
+			System.out.println(options.toString());
+			System.out.println(shareCounts.toString());
 		} catch (Exception e) {
 			System.out.println("Could not read file: " + e);
 		}
 	}
 
+
+	/**
+	 * Writes values of hashtables to txt
+	 */
 	public static void saveOptions() {
-		String[] optionsString = new String[options.size()];
+		options.put("networth", "" + Portfolio.getTotalNetworth());
+
+
+		ArrayList<String> optionsList = new ArrayList<String>();
+		// go through options
 		for (int i = 0; i < options.size(); i++) {
 			String keyName = options.keySet().toArray()[i].toString();
 			String keyValue = options.get(keyName);
-			optionsString[i] = keyName + ":" + keyValue;
+			optionsList.add(keyName + ":" + keyValue);
 		}
+		
+		// go through shareCounts
+		for(int i = 0; i < shareCounts.size(); i++) {
+			String keyName = options.keySet().toArray()[i].toString();
+			String keyValue = options.get(keyName);
+			optionsList.add(keyName + ":" + keyValue);
+		}
+		
 		FileWriter writer;
 		try {
 			writer = new FileWriter("./resources/options.txt");
-			for (String line : optionsString) {
+			for (String line : optionsList) {
 				writer.append(line + "\n");
 			}
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("Error writing CSV file: " + e);
 		}
+	}
+
+
+	/**
+	 * Gets the number of shares of given stocks in hashtable
+	 * @param stock ticker of stock
+	 * @return number of shares of stock
+	 */
+	public static int getStockCount(String stock) {
+		return shareCounts.get(stock);
+	}
+
+
+	/**
+	 * Sets the number of shares for a given stock in hashtable
+	 * @param stock ticker of stock
+	 * @param shares number of shares of stock
+	 */
+	public static void setStockCount(String stock, int shares) {
+		shareCounts.put(stock, shares);
 	}
 
 	/**
@@ -128,6 +181,10 @@ public class Options {
 
 	public static int getSimulationSpeedScaled(){
 		return 2500/Integer.parseInt(options.get("simulationspeed"));
+	}
+
+	public static double getNetWorth() {
+		return Double.parseDouble(options.get("networth"));
 	}
 	
 }

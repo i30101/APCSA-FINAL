@@ -19,6 +19,8 @@ public class Broker {
         speed = 1000;
         dayTransactions = 0;
 
+        Options.loadOptions();
+
         stocks = new ArrayList<Stock>();
 
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
@@ -31,6 +33,8 @@ public class Broker {
             double price = Double.parseDouble(tempPrice[tempPrice.length - 1]);
 
             stocks.add(new Stock(tempStock[0], tempStock[1], tempStock[2], price));
+            Portfolio.buyStock(tempStock[0], Options.getStockCount(tempStock[0]));
+
         }
 
         new Portfolio();
