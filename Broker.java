@@ -37,6 +37,7 @@ public class Broker {
 
         }
 
+        Options.loadOptions();
         new Portfolio();
         new GUIDriver();
 

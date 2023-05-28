@@ -107,7 +107,7 @@ public class Options {
 	 * @return the font.
 	 */
 	public static Font getFont() {
-		return new Font("Arial", Font.PLAIN, Integer.valueOf(options.get("fontsize").split("\r")[0]));
+		return new Font("Arial", Font.PLAIN, Integer.valueOf(options.get("fontsize")));
 	}
 
 	/**
