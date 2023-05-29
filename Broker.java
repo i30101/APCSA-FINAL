@@ -1,5 +1,5 @@
 /**
- * @version 1.0.0 9 May 2023
+ * @version 1.0.0 9, May 2023
  * @author Andrew Kim and Dylan Nguyen
  * 
  * Driver class for managing stocks and stock prices

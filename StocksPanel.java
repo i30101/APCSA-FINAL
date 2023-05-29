@@ -1,6 +1,10 @@
+/**
+ * @version 1.0.0, 29 May 2023
+ * @author Dylan Nguyen and Andrew Kim
+ */
+
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 

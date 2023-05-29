@@ -1,5 +1,5 @@
 /**
- * @version 1.0.0 9 May 2023
+ * @version 1.0.0, 9 May 2023
  * @author Andrew Kim and Dylan Nguyen
  * 
  * Price history manager for all stocks and indeces

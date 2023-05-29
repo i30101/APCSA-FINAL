@@ -1,5 +1,5 @@
 /**
- * @version 1.0.0 18 May 2023
+ * @version 1.0.0, 18 May 2023
  * @author Andrew Kim and Dylan Nguyen
  */
 
