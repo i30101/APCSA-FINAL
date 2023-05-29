@@ -23,6 +23,8 @@ public class Broker {
 
         stocks = new ArrayList<Stock>();
 
+        new Portfolio();
+
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
         ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
 
@@ -34,11 +36,9 @@ public class Broker {
 
             stocks.add(new Stock(tempStock[0], tempStock[1], tempStock[2], price));
             Portfolio.buyStock(tempStock[0], Options.getStockCount(tempStock[0]));
-
         }
+       
 
-        Options.loadOptions();
-        new Portfolio();
         new GUIDriver();
 
         while(true) {
@@ -60,6 +60,11 @@ public class Broker {
         dayTransactions++;
         for (Stock s : stocks) {
             s.newTransaction();
+
+             // autosave
+            if(dayTransactions % 10 == 0) {
+                Options.saveOptions();
+            }
             if(dayTransactions % 30 == 0) {
                 s.newDay();
                 dayTransactions = 0;

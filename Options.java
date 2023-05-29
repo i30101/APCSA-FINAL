@@ -27,11 +27,11 @@ public class Options {
 			int count = 0;
 			while (scanner.hasNext()) {
 				String next = scanner.next();
-				String key = next.split(":")[0];
-				String value = next.split(":")[1];
+				String key = next.split(":")[0].split("\r")[0];
+				String value = next.split(":")[1].split("\r")[0];
 				if(count < 5) {
 					options.put(key, value);
-				}else if(count < 4) {
+				}else{
 					shareCounts.put(key, Integer.parseInt(value));
 				}
 				count++;
@@ -39,8 +39,8 @@ public class Options {
 			scanner.close();
 			
 			// print hashtables
-			System.out.println(options.toString());
-			System.out.println(shareCounts.toString());
+			// System.out.println(options.toString());
+			// System.out.println(shareCounts.toString());
 		} catch (Exception e) {
 			System.out.println("Could not read file: " + e);
 		}
@@ -64,8 +64,8 @@ public class Options {
 		
 		// go through shareCounts
 		for(int i = 0; i < shareCounts.size(); i++) {
-			String keyName = options.keySet().toArray()[i].toString();
-			String keyValue = options.get(keyName);
+			String keyName = shareCounts.keySet().toArray()[i].toString();
+			String keyValue = "" + shareCounts.get(keyName);
 			optionsList.add(keyName + ":" + keyValue);
 		}
 		
@@ -84,11 +84,11 @@ public class Options {
 
 	/**
 	 * Gets the number of shares of given stocks in hashtable
-	 * @param stock ticker of stock
+	 * @param ticker ticker of stock
 	 * @return number of shares of stock
 	 */
-	public static int getStockCount(String stock) {
-		return shareCounts.get(stock);
+	public static int getStockCount(String ticker) {
+		return shareCounts.get(ticker);
 	}
 
 

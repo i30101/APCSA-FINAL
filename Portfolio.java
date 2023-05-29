@@ -26,6 +26,7 @@ public class Portfolio {
          * Used to calculate the average amount spent on each share
          */
         spentOnStocks = new Hashtable<>();
+        System.out.println(Broker.getStocks().toString());
         for(Stock stock : Broker.getStocks()) {
             spentOnStocks.put(stock.getTicker(), 0.0);
         }
@@ -39,10 +40,14 @@ public class Portfolio {
      * @return cost of buying those stocks
      */
     public static double buyStock(String ticker, int amount){
+        if(amount == 0) return 0;
         double currentStockPrice = Broker.getStock(ticker).getTransactionPrice();
         if(currentStockPrice * amount <= balance){
             if(ownedStocks.get(ticker) == null) {
                 ownedStocks.put(ticker, 0);
+            }
+            if(spentOnStocks.get(ticker) == null) {
+                spentOnStocks.put(ticker, 0.0);
             }
 
             // increase number of owned shares

@@ -111,12 +111,12 @@ public class StockOptionsWindow extends JFrame {
 					if (Options.popupsEnabled())
 						JOptionPane.showMessageDialog(null,
 								"Successfully bought " + amount + " shares of " + stock.getTicker() + " for " + cost);
+					Options.saveOptions();
 					remove(panel);
 					reload(stock);
 				} else {
 					JOptionPane.showMessageDialog(null, "Could not buy stock. Please enter a lower number.");
 				}
-				;
 			}
 		});
 		panel.add(buyButton);
@@ -147,6 +147,7 @@ public class StockOptionsWindow extends JFrame {
 					if (Options.popupsEnabled())
 						JOptionPane.showMessageDialog(null,
 								"Successfully sold " + amount + " shares of " + stock.getTicker() + " for " + cost);
+					Options.saveOptions();
 					remove(panel);
 					reload(stock);
 				} else
