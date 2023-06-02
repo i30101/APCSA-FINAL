@@ -55,6 +55,12 @@ public class GUIDriver {
 		gridPanel.add(matthewButton, c);
 		buttons.add(matthewButton);
 
+		SidebarButton pughButton = new SidebarButton(new File("resources/best_girl.jpg"));
+		pughButton.setText("mr pugh");
+		c.gridy++;
+		gridPanel.add(pughButton, c);
+		buttons.add(pughButton);
+
 		SidebarButton optionsButton = new SidebarButton(new File("resources/options.png"));
 		optionsButton.setText("options");
 		c.gridy++;
@@ -110,7 +116,7 @@ public class GUIDriver {
 		Timer timer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(displayPanel.getCurrentPanel() != "options")
+				if(displayPanel.getCurrentPanel() != "options" && displayPanel.getCurrentPanel() != "mr pugh")
 					displayPanel.openByID(selected);
 			}
 		});

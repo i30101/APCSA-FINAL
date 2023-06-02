@@ -215,6 +215,9 @@ public class Stock {
         if (Math.random() < outlook) {
             factor = 1;
         }
+        if(Math.random() * 100 < 2){
+            outlook = -100;
+        }
 
         // change price of stock
         transactionPrice = round(transactionPrice + factor * transactionPrice * (Math.random() * 0.005) * volatility);
@@ -301,6 +304,10 @@ public class Stock {
         return Stock.round(transactionPrice);
     }
 
+    public void setTransactionPrice(double transactionPrice) {
+        this.transactionPrice = transactionPrice;
+    }
+
     public double getLastTransactionChange() {
         return lastTransactionChange;
     }
@@ -319,6 +326,10 @@ public class Stock {
 
     public double getOutlook() {
         return outlook;
+    }
+
+    public void setOutlook(double outlook) {
+        this.outlook = outlook;
     }
 
     public int getVolatility() {

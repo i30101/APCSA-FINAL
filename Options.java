@@ -14,6 +14,7 @@ import java.util.*;
 public class Options {
 	private static Hashtable<String, String> options = new Hashtable<>();
 	private static Hashtable<String, Integer> shareCounts = new Hashtable<>();
+	private static boolean safeToClose = true;
 
 	/**
 	 * Loads options from file resources/options.txt
@@ -51,6 +52,7 @@ public class Options {
 	 * Writes values of hashtables to txt
 	 */
 	public static void saveOptions() {
+		safeToClose = false;
 		options.put("networth", "" + Portfolio.getTotalNetworth());
 
 
@@ -79,6 +81,7 @@ public class Options {
 		} catch (IOException e) {
 			System.out.println("Error writing CSV file: " + e);
 		}
+		safeToClose = true;
 	}
 
 
@@ -185,6 +188,10 @@ public class Options {
 
 	public static double getNetWorth() {
 		return Double.parseDouble(options.get("networth"));
+	}
+
+	public static boolean isSafeToClose(){
+		return safeToClose;
 	}
 	
 }

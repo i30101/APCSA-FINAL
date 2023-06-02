@@ -3,10 +3,10 @@
  * @author Andrew Kim and Dylan Nguyen
  */
 
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.*;
 
@@ -15,17 +15,20 @@ public class DisplayPanel extends JPanel {
     private StocksPanel stocksPanel;
     private DashboardPanel dashboardPanel;
     private OptionsPanel optionsPanel;
+    private MrPughPanel mrPughPanel;
     Font font = new Font("Verdana", Font.PLAIN, 10);
     GridBagConstraints c;
     
 
     public DisplayPanel() {
         super();
-        setLayout(new GridBagLayout());
+        setLayout(new GridLayout(0,1));
         currentPanel = "dashboard";
         stocksPanel = new StocksPanel();
         dashboardPanel = new DashboardPanel();
         optionsPanel = new OptionsPanel();
+        mrPughPanel = new MrPughPanel();
+
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -48,6 +51,9 @@ public class DisplayPanel extends JPanel {
                 break;
             case "matthew":
                 displayMatthew();
+                break;
+            case "mr pugh":
+                displayClicker();
                 break;
         }
     }
@@ -82,6 +88,18 @@ public class DisplayPanel extends JPanel {
     public void displayMatthew() {
         removeAll();
         add(new ScaledLabel("Matthew !!!!"));
+        revalidate();
+        repaint();
+    }
+
+    public void displayClicker() {
+        removeAll();
+        if(Portfolio.getStockAmount("PUGH") == 0)
+            add(new ScaledLabel("whats this?"));
+        else{
+            mrPughPanel.reload();
+            add(mrPughPanel);
+        }
         revalidate();
         repaint();
     }

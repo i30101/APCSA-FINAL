@@ -13,6 +13,7 @@ import java.io.*;
 public class Broker {
     private static int dayTransactions;
     private static ArrayList<Stock> stocks = new ArrayList<Stock>();
+    private static boolean safeToClose = true;
 
     public static void main(String[] args) {
         dayTransactions = 0;
@@ -46,6 +47,10 @@ public class Broker {
                 Thread.currentThread().interrupt();
             }
             newTransactions();
+            if(Broker.getStock("PUGH").getTransactionPrice() < 1000){
+                Broker.getStock("PUGH").setTransactionPrice(1000);
+                Broker.getStock("PUGH").setOutlook(1.0);
+            }
         }
     }
 
@@ -67,10 +72,13 @@ public class Broker {
                 dayTransactions = 0;
             }
         }
+
+        safeToClose = false;
         // write trading histories
         dayWrite();
         monthWrite();
         yearWrite();
+        safeToClose = true;
     }
 
     /**
@@ -227,4 +235,7 @@ public class Broker {
     public static String getDate() {
         return ((PriceHistory.getDays()/12)+1)+"/"+(PriceHistory.getDays()%30)+"/"+((PriceHistory.getDays()/365)+1929);
     }
+	public static boolean isSafeToClose(){
+		return safeToClose;
+	}
 }

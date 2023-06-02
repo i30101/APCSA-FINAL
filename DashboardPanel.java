@@ -1,3 +1,4 @@
+
 /**
  * @version 1.0.0, 8 May 2023
  * @author Andrew Kim and Dylan Nguyen
@@ -16,7 +17,7 @@ public class DashboardPanel extends JPanel {
 
     public DashboardPanel() {
         super();
-        setBackground(new Color(255,255,255));
+        setBackground(new Color(255, 255, 255));
     }
 
     public void reload() {
@@ -29,11 +30,13 @@ public class DashboardPanel extends JPanel {
         // top panel
         JPanel overviewPanel = new JPanel();
         overviewPanel.setLayout(new GridLayout(0, 1));
-        overviewPanel.setPreferredSize(new Dimension(10000, Options.getFont().getSize()*7));
-        overviewPanel.add(new ScaledLabel("Overview - "+Portfolio.getSystemName(), (int) (Options.getFont().getSize() * 1.5)));
+        overviewPanel.setPreferredSize(new Dimension(10000, Options.getFont().getSize() * 7));
+        overviewPanel.add(
+                new ScaledLabel("Overview - " + Portfolio.getSystemName(), (int) (Options.getFont().getSize() * 1.5)));
         overviewPanel.add(new ScaledLabel("Your balance is: $ " + Portfolio.getBalance()));
         overviewPanel.add(new ScaledLabel("Your net worth is: $ " + Portfolio.getTotalNetworth()));
-        overviewPanel.add(new ScaledLabel("Your total profit is: $ " + Stock.round(Portfolio.getTotalNetworth() - 10000)));
+        overviewPanel
+                .add(new ScaledLabel("Your total profit is: $ " + Stock.round(Portfolio.getTotalNetworth() - 10000)));
         overviewPanel.add(new ScaledLabel(
                 "Intra-day update count: " + Broker.getStock("AAPL").getPriceHistory().getDayHistory().size() + "/30"));
         overviewPanel.add(new ScaledLabel("Date: " + Broker.getDate()));
@@ -57,6 +60,7 @@ public class DashboardPanel extends JPanel {
         stocksHeaderLabel.add(new ScaledLabel("Day Change"));
         stocksHeaderLabel.add(new ScaledLabel("Total Invested"));
         stocksHeaderLabel.add(new ScaledLabel("% of Portfolio"));
+        stocksOverviewPanel.add(stocksHeaderLabel);
 
         // metrics for owned stocks
         for (String ticker : Portfolio.getOwnedStocks().keySet()) {
@@ -96,7 +100,7 @@ public class DashboardPanel extends JPanel {
             row.add(new ScaledLabel("No stocks owned"));
             stocksOverviewPanel.add(row);
         }
-        
+
         stocksOverviewPanel.setMaximumSize(new Dimension(10000, 10000));
         add(stocksOverviewPanel);
     }
