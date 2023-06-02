@@ -1,7 +1,7 @@
 startfullscreen:true
 popups:false
-networth:3.225371236399E10
-simulationspeed:10
+networth:9384.89
+simulationspeed:1
 fontsize:14
 CSCO:2
 UNH:0

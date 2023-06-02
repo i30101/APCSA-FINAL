@@ -1,3 +1,8 @@
+/**
+ * @version 1.0.0, 29 May 2023
+ * @author Dylan Nguyen and Andrew Kim
+ */
+
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
