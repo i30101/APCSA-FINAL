@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 
 public class ScaledLabel extends JLabel {

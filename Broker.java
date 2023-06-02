@@ -11,12 +11,10 @@ import java.io.*;
 
 
 public class Broker {
-    private static int speed;
     private static int dayTransactions;
     private static ArrayList<Stock> stocks = new ArrayList<Stock>();
 
     public static void main(String[] args) {
-        speed = 1000;
         dayTransactions = 0;
 
         Options.loadOptions();
@@ -42,7 +40,6 @@ public class Broker {
         new GUIDriver();
 
         while(true) {
-            // wait half a second for each transaction
             try{
                 Thread.sleep(Options.getSimulationSpeedScaled());
             }catch (InterruptedException e) {
@@ -225,10 +222,6 @@ public class Broker {
 
     public static int getDayTransactions() {
         return dayTransactions;
-    }
-
-    public static int getSpeed() {
-        return speed;
     }
 
     public static String getDate() {

@@ -29,6 +29,7 @@ public class StockOptionsWindow extends JFrame {
 		setSize(450 * (Options.getFont().getSize() / 10), 200 * (Options.getFont().getSize() / 10));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
+		setAlwaysOnTop(true);
 		setVisible(true);
 
 		reload(stock);
