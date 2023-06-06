@@ -55,7 +55,7 @@ public class GUIDriver {
 		gridPanel.add(matthewButton, c);
 		buttons.add(matthewButton);
 
-		SidebarButton pughButton = new SidebarButton(new File("resources/best_girl.jpg"));
+		SidebarButton pughButton = new SidebarButton(new File("resources/clicker/best_girl.jpg"));
 		pughButton.setText("mr pugh");
 		c.gridy++;
 		gridPanel.add(pughButton, c);

@@ -1,6 +1,6 @@
 startfullscreen:true
 popups:false
-networth:1.0040121E7
+networth:1.0179939E7
 simulationspeed:1
 fontsize:14
 CSCO:0
@@ -23,14 +23,14 @@ CAT:0
 MSFT:0
 CVX:0
 JPM:0
-WMT:0
 TRV:0
+WMT:0
 PUGH:1000
 DOW:0
 DIS:0
 PG:0
 AMGN:0
 KO:0
-MRK:0
 JNJ:0
+MRK:0
 MCD:0

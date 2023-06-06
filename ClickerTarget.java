@@ -1,10 +1,12 @@
 public class ClickerTarget {
-    private int x, y, timer;
+    private int x, y, speed;
+    private double direction;
 
-    public ClickerTarget(int x, int y){
+    public ClickerTarget(int x, int y, int speed){
         this.x = x;
         this.y = y;
-        timer = 0;
+        this.speed = speed;
+        direction = Math.random() * 2 * Math.PI;
     }
 
     public void setX(int x) {
@@ -23,15 +25,16 @@ public class ClickerTarget {
         return y;
     }
 
-    public int getTimer() {
-        return timer;
+    public void step(){
+        x += speed * Math.cos(direction);
+        y += speed * Math.sin(direction);
     }
 
-    public void setTimer(int t){
-        timer = t;
+    public void bounceVertical(){
+        direction = Math.PI + (Math.PI - direction);
     }
 
-    public void incrementTimer(){
-        timer++;
+    public void bounceHorizontal(){
+        direction = Math.PI - direction;
     }
 }

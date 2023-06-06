@@ -1,23 +1,43 @@
 import java.awt.Color;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import java.awt.Image;
 
 public class ClickerButton {
     private int x, y, width, height;
+    private Image image;
     private Color color;
     private String id, text;
 
-    public ClickerButton(int x, int y, int width, int height){
+    public ClickerButton(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.width = width; 
+        this.width = width;
         this.height = height;
     }
 
-    public ClickerButton(int x, int y, int width, int height, Color color, String id, String text){
+    public ClickerButton(int x, int y, int width, int height, Color color, String id, String text) {
         this.x = x;
         this.y = y;
-        this.width = width; 
+        this.width = width;
         this.height = height;
         this.color = color;
+        this.id = id;
+        this.text = text;
+    }
+
+    public ClickerButton(int x, int y, int width, int height, File image, String id, String text) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        try {
+            this.image = ImageIO.read(image);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         this.id = id;
         this.text = text;
     }
@@ -50,11 +70,15 @@ public class ClickerButton {
         return id;
     }
 
-    public Color getColor(){
+    public Color getColor() {
         return color;
     }
 
-    public String getText(){
+    public Image getImage() {
+        return image;
+    }
+
+    public String getText() {
         return text;
     }
 
