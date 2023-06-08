@@ -1,3 +1,4 @@
+
 /**
  * @version 1.0.0 9, May 2023
  * @author Andrew Kim and Dylan Nguyen
@@ -8,7 +9,6 @@
 
 import java.util.*;
 import java.io.*;
-
 
 public class Broker {
     private static int dayTransactions;
@@ -27,7 +27,7 @@ public class Broker {
         ArrayList<String[]> rawStocks = readCSV("./data/companies.csv");
         ArrayList<String[]> rawPrices = readCSV("./data/day-history.csv");
 
-        for (int i = 1; i < rawStocks.size() - 1; i++) {    
+        for (int i = 1; i < rawStocks.size() - 1; i++) {
             String[] tempStock = rawStocks.get(i);
             String[] tempPrice = rawPrices.get(i);
 
@@ -36,18 +36,17 @@ public class Broker {
             stocks.add(new Stock(tempStock[0], tempStock[1], tempStock[2], price));
             Portfolio.buyStock(tempStock[0], Options.getStockCount(tempStock[0]));
         }
-       
 
         new GUIDriver();
 
-        while(true) {
-            try{
+        while (true) {
+            try {
                 Thread.sleep(Options.getSimulationSpeedScaled());
-            }catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             newTransactions();
-            if(Broker.getStock("PUGH").getTransactionPrice() < 1000){
+            if (Broker.getStock("PUGH").getTransactionPrice() < 1000) {
                 Broker.getStock("PUGH").setTransactionPrice(1000);
                 Broker.getStock("PUGH").setOutlook(1.0);
             }
@@ -63,11 +62,11 @@ public class Broker {
         for (Stock s : stocks) {
             s.newTransaction();
 
-             // autosave
-            if(dayTransactions % 10 == 0) {
+            // autosave
+            if (dayTransactions % 10 == 0) {
                 Options.saveOptions();
             }
-            if(dayTransactions % 30 == 0) {
+            if (dayTransactions % 30 == 0) {
                 s.newDay();
                 dayTransactions = 0;
             }
@@ -233,9 +232,11 @@ public class Broker {
     }
 
     public static String getDate() {
-        return ((PriceHistory.getDays()/12)+1)+"/"+(PriceHistory.getDays()%30)+"/"+((PriceHistory.getDays()/365)+1929);
+        return ((PriceHistory.getDays() / 12) + 1) + "/" + (PriceHistory.getDays() % 30) + "/"
+                + ((PriceHistory.getDays() / 365) + 1929);
     }
-	public static boolean isSafeToClose(){
-		return safeToClose;
-	}
+
+    public static boolean isSafeToClose() {
+        return safeToClose;
+    }
 }

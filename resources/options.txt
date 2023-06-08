@@ -1,6 +1,6 @@
-startfullscreen:true
-popups:false
-networth:1.0179939E7
+startfullscreen:false
+popups:true
+networth:2000
 simulationspeed:1
 fontsize:14
 CSCO:0
@@ -25,7 +25,7 @@ CVX:0
 JPM:0
 TRV:0
 WMT:0
-PUGH:1000
+PUGH:0
 DOW:0
 DIS:0
 PG:0

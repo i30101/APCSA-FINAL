@@ -26,7 +26,7 @@ public class ClickerPanel extends JPanel implements MouseListener {
     private int redBuffTimer = 0, pinkBuffTimer = 0;
 
     Image img;
-    int timer;
+    Timer timer;
 
     private static int pughPoints = 100;
 
@@ -37,10 +37,9 @@ public class ClickerPanel extends JPanel implements MouseListener {
         removeAll();
         revalidate();
         setBackground(new Color(0, 0, 0));
-        timer = 0;
         targets = new ArrayList<>();
         try {
-            img = ImageIO.read(new File("resources/clicker/best_girl.jpg"));
+            img = ImageIO.read(new File("resources/clicker/best_teacher.jpg"));
         } catch (IOException e) {
             /* we do not care */ }
         Timer timer = new Timer(TICKRATE, new ActionListener() {
