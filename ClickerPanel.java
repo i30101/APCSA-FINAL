@@ -57,14 +57,10 @@ public class ClickerPanel extends JPanel implements MouseListener {
         ClickerButton pinkCup = new ClickerButton(0, 200, 100, 100, new File("resources/clicker/pink_cup.png"),
                 "pinkCup",
                 "A pink cup\nCosts 100 Pugh Points\n\"can you do this lab for me real quick\"");
-        ClickerButton greenCup = new ClickerButton(0, 300, 100, 100, new File("resources/clicker/green_cup.png"),
-                "greenCup",
-                "A green cup\n'i am above everybody'");
 
         buttons = new ArrayList<>();
         buttons.add(redCup);
         buttons.add(pinkCup);
-        buttons.add(greenCup);
     }
 
     public void clickPoint(int x, int y) {
